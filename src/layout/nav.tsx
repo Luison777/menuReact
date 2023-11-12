@@ -20,10 +20,13 @@ import { useRouter } from 'next/navigation'
                         Favorites
                 </li>
                 <li className={`text-center h-full flex items-center p-2  ${pathname=='/apetizers'? 'shadow-inner shadow-black':''}`}  onClick={()=>router.push('/apetizers')}>
-                        Apetizers
+                        Appetizers
                 </li>
                 <li className={`text-center h-full flex items-center p-2   ${pathname=='/especialidades'? 'shadow-inner shadow-black  ':''}`}  onClick={()=>router.push('/especialidades')}>
                         Especialidades
+                </li>
+                <li className={`text-center h-full flex items-center p-2   ${pathname=='/childs'? 'shadow-inner shadow-black  ':''}`}  onClick={()=>router.push('/childs')}>
+                       Child's Menu
                 </li>
                 <li className={`text-center h-full flex items-center p-2  ${pathname=='/best'? 'shadow-inner shadow-black  ':''}`}  onClick={()=>router.push('/best')}>
                         Mexico's Best
