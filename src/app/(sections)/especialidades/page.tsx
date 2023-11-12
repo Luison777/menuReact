@@ -168,6 +168,9 @@ export default function EspecialidadesPage() {
   return (
       <>
         <p className="block text-black w-full ml-2 text-2xl">Especialidades</p>
+        <div className="w-full p-2 m-2 rounded shadow shadow-black text-black text-center text-xs">
+          With cheese dip on top, add $1.25 extra.  
+        </div>
         {dishes.map((obj,idx)=> <CardFood key={idx} dish={obj.dish} ingredients={obj.ingredients} price={obj.price} src={obj.src}></CardFood>)}
         
       </>

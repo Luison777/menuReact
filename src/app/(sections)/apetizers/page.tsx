@@ -203,10 +203,7 @@ export default function ApetizersPage() {
   }]
   return (
       <>
-        
-        
         <p className="block text-black w-full ml-2 text-2xl">Appetizers</p>
-        
         {dishes.map((obj,idx)=> <CardFood key={idx} dish={obj.dish} ingredients={obj.ingredients} price={obj.price} src={obj.src}></CardFood>)}
         <p className="block text-black w-full ml-2 text-2xl">Salads</p>
         {Salads.map((obj,idx)=> <CardFood key={idx} dish={obj.dish} ingredients={obj.ingredients} price={obj.price} src={obj.src}></CardFood>)}

@@ -46,6 +46,9 @@ import { useRouter } from 'next/navigation'
                 <li className={`text-center h-full flex items-center p-2  ${pathname=='/sideOrders'? 'shadow-inner shadow-black  ':''}`}  onClick={()=>router.push('/sideOrders')}>
                         Side Orders
                 </li>
+                <li className={`text-center h-full flex items-center p-2  ${pathname=='/vegetarian'? 'shadow-inner shadow-black  ':''}`}  onClick={()=>router.push('/vegetarian')}>
+                        Vegetarian Dishes
+                </li>
                 <li className={`text-center h-full flex items-center p-2  ${pathname=='/desserts'? 'shadow-inner shadow-black  ':''}`}  onClick={()=>router.push('/desserts')}>
                         Desserts
                 </li>
