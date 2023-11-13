@@ -167,7 +167,7 @@ export default function EspecialidadesPage() {
   ]
   return (
       <>
-        <p className="block text-black w-full ml-2 text-2xl">Especialidades</p>
+        <p className="block text-black w-full ml-2 text-2xl Mexicanero text-center text-orange-500">Especialidades</p>
         <div className="w-full p-2 m-2 rounded shadow shadow-black text-black text-center text-xs">
           With cheese dip on top, add $1.25 extra.  
         </div>

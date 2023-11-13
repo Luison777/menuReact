@@ -14,7 +14,28 @@
     --background-end-rgb: 0, 0, 0;
   }
 }
+@font-face {
+  font-family: 'Mexicanero';
+  src: url('../fonts/Mexicanero-Italic.otf') format('opentype');
+
+}
+
+@font-face {
+  font-family: 'Lobster';
+  src: url('../fonts/LobsterTwo-Italic.ttf') format('truetype');
+
+}
+
+.Mexicanero {
+  font-family: 'Mexicanero', sans-serif;
+}
+.Lobster {
+  font-family: 'Lobster', sans-serif;
+}
+
 
 body {
-  background-color: white;
+ 
+  background-color: rgb(50, 49, 49) ;
 }
+

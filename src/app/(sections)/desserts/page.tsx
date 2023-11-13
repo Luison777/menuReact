@@ -29,7 +29,7 @@ export default function DessertsPage() {
   ]
   return (
       <>
-        <p className="block text-black w-full ml-2 text-2xl">Desserts</p>
+        <p className="block text-black w-full ml-2 text-2xl Mexicanero text-center text-orange-500 ">Desserts</p>
         {desserts.map((obj,idx)=> <CardFood key={idx} dish={obj.dish} ingredients={obj.ingredients} price={obj.price} src={obj.src}></CardFood>)}
 
         

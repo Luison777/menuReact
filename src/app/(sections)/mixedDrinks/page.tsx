@@ -47,17 +47,16 @@ export default function DrinksPage() {
     {
       dish: "Soft Drinks",
       ingredients: "Soft Drink $3.25, Mexican Sodas $2.50, Natural Flavor Water" ,
-      price: "$11.75",
+      price: "",
       src: ""
     }
   ]
   
   return (
       <>
-        <p className="block text-black w-full ml-2 text-2xl">Mixed Drinks</p>
+        <p className="block text-black w-full ml-2 text-2xl Mexicanero text-center text-orange-500">Mixed Drinks</p>
         {drinks.map((obj,idx)=> <CardFood key={idx} dish={obj.dish} ingredients={obj.ingredients} price={obj.price} src={obj.src}></CardFood>)}
 
-        
       </>
     )
 }

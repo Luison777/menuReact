@@ -60,7 +60,7 @@ export default function CasasFavoritesPage() {
   
   return (
       <>
-        <p className="block text-black w-full ml-2 text-2xl">Casa's Favorites</p>
+        <p className="block text-black w-full ml-2 text-2xl Mexicanero text-center text-orange-500">Casa's Favorites</p>
         {dishes.map((obj,idx)=> <CardFood key={idx} dish={obj.dish} ingredients={obj.ingredients} price={obj.price} src={obj.src}></CardFood>)}
 
         

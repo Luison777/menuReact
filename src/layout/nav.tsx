@@ -8,51 +8,55 @@ import { useRouter } from 'next/navigation'
         export default function Nav(){
         const pathname = usePathname();
         const router = useRouter()
-     
+        const style='text-center h-full flex items-center p-2';
+        const active='shadow-inner shadow-white rounded';
 
         
 
     return(
         <>
-       <nav className={`w-full h-16 rounded-t-lg px-2 border-t-2 bg-white fixed bottom-0 z-50`}>
-            <ul className="flex items-center h-[93%] overflow-x-auto text-black p-1">
-                <li className={`text-center h-full flex items-center p-2  ${pathname=='/'? 'shadow-inner shadow-black ':''}`} onClick={()=>router.push('/')}>
+       <nav className={`w-full h-16 rounded-t-lg px-2  bg-white fixed bottom-0 z-50 bg-black text-white`}>
+            <ul className="flex items-center h-[93%] overflow-x-auto p-1 Lobster">
+                <li className={`${style} ${pathname=='/'? active:''}`} onClick={()=>router.push('/')}>
                         Favorites
                 </li>
-                <li className={`text-center h-full flex items-center p-2  ${pathname=='/apetizers'? 'shadow-inner shadow-black':''}`}  onClick={()=>router.push('/apetizers')}>
+                <li className={`${style} ${pathname=='/apetizers'? active:''}`}  onClick={()=>router.push('/apetizers')}>
                         Appetizers
                 </li>
-                <li className={`text-center h-full flex items-center p-2   ${pathname=='/especialidades'? 'shadow-inner shadow-black  ':''}`}  onClick={()=>router.push('/especialidades')}>
+                <li className={`${style}   ${pathname=='/especialidades'? active:''}`}  onClick={()=>router.push('/especialidades')}>
                         Especialidades
                 </li>
-                <li className={`text-center h-full flex items-center p-2   ${pathname=='/childs'? 'shadow-inner shadow-black  ':''}`}  onClick={()=>router.push('/childs')}>
+                <li className={`${style} ${pathname=='/childs'? active:''}`}  onClick={()=>router.push('/childs')}>
                        Child's Menu
                 </li>
-                <li className={`text-center h-full flex items-center p-2  ${pathname=='/best'? 'shadow-inner shadow-black  ':''}`}  onClick={()=>router.push('/best')}>
+                <li className={`${style} ${pathname=='/best'? active:''}`}  onClick={()=>router.push('/best')}>
                         Mexico's Best
                 </li>
-                <li className={`text-center h-full flex items-center p-2  ${pathname=='/chicken'? 'shadow-inner shadow-black  ':''}`}  onClick={()=>router.push('/chicken')}>
+                <li className={`${style}  ${pathname=='/chicken'? active:''}`}  onClick={()=>router.push('/chicken')}>
                         Chicken Dishes
                 </li>
-                <li className={`text-center h-full whitespace-nowrap flex items-center p-2  ${pathname=='/grill'? 'shadow-inner shadow-black ':''}`}  onClick={()=>router.push('/grill')}>
+                <li className={`${style} whitespace-nowrap  ${pathname=='/grill'? active:''}`}  onClick={()=>router.push('/grill')}>
                         From the <br /> Grill
                 </li>
-                <li className={`text-center h-full flex items-center p-2  ${pathname=='/seafood'? 'shadow-inner shadow-black ':''}`}  onClick={()=>router.push('/seafood')}>
+                <li className={`${style} ${pathname=='/seafood'? active:''}`}  onClick={()=>router.push('/seafood')}>
                          Seafood 
                 </li>
-                <li className={`text-center h-full flex items-center p-2  ${pathname=='/casasFavorites'? 'shadow-inner shadow-black ':''}`}  onClick={()=>router.push('/casasFavorites')}>
+                <li className={`${style} ${pathname=='/casasFavorites'? active:''}`}  onClick={()=>router.push('/casasFavorites')}>
                         Casa's <br />Favorite 
                 </li>
-                <li className={`text-center h-full flex items-center p-2  ${pathname=='/sideOrders'? 'shadow-inner shadow-black  ':''}`}  onClick={()=>router.push('/sideOrders')}>
+                <li className={`${style}  ${pathname=='/sideOrders'? active:''}`}  onClick={()=>router.push('/sideOrders')}>
                         Side Orders
                 </li>
-                <li className={`text-center h-full flex items-center p-2  ${pathname=='/vegetarian'? 'shadow-inner shadow-black  ':''}`}  onClick={()=>router.push('/vegetarian')}>
+                <li className={`${style} ${pathname=='/vegetarian'? active:''}`}  onClick={()=>router.push('/vegetarian')}>
                         Vegetarian Dishes
                 </li>
-                <li className={`text-center h-full flex items-center p-2  ${pathname=='/desserts'? 'shadow-inner shadow-black  ':''}`}  onClick={()=>router.push('/desserts')}>
+                <li className={`${style}  ${pathname=='/combos'? active:''}`}  onClick={()=>router.push('/combos')}>
+                        Combos
+                </li>
+                <li className={`${style}  ${pathname=='/desserts'? active:''}`}  onClick={()=>router.push('/desserts')}>
                         Desserts
                 </li>
-                <li className={`text-center h-full flex items-center p-2  ${pathname=='/mixedDrinks'? 'shadow-inner shadow-black':''}`}  onClick={()=>router.push('/mixedDrinks')}>
+                <li className={`${style}  ${pathname=='/mixedDrinks'? active:''}`}  onClick={()=>router.push('/mixedDrinks')}>
                         Mixed Drinks
                 </li>
             </ul>
