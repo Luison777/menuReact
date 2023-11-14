@@ -8,15 +8,16 @@ import { useRouter } from 'next/navigation'
         export default function Nav(){
         const pathname = usePathname();
         const router = useRouter()
-        const style='text-center h-full flex items-center p-2';
+        const style='text-center h-full flex items-center p-2 neon';
         const active='shadow-inner shadow-white rounded';
 
         
 
     return(
         <>
-       <nav className={`w-full h-16 rounded-t-lg px-2  bg-white fixed bottom-0 z-50 bg-black text-white`}>
-            <ul className="flex items-center h-[93%] overflow-x-auto p-1 Lobster">
+       <nav className={`w-full h-16 rounded-t-lg fixed bottom-0 z-50 text-white bg-white pt-[2px]`}>
+       <img src="./pared2.jpg" alt="pared" className="absolute bg-cover w-full rounded" />
+            <ul className="flex items-center h-[93%] overflow-x-auto p-1 Lobster relative z-50 rounded">
                 <li className={`${style} ${pathname=='/'? active:''}`} onClick={()=>router.push('/')}>
                         Favorites
                 </li>

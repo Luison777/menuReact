@@ -102,13 +102,13 @@ export default function GrillPage() {
   
   return (
       <>
-        <div className="w-full p-2 m-2 rounded shadow shadow-black text-black text-center text-xs">
+        <div className="w-full  rounded  text-white text-xs border-2 m-2 text-center">
           <p className="text-red-500">Fajitas are served on VERY HOT skillest</p>
           We use oor special recipe to cook tender strips of marinated chicken breast, steak or shripm. All fajitas are
           cooked with bell peppers, sauteed onions and tomatoes. Garnished on the side with lettuce, guacamole, sour cream,
           pico de gallo, rice and beans.
         </div>
-        <p className="block text-black w-full ml-2 text-2xl Mexicanero text-center text-orange-500">From the Grill</p>
+        <p className="block w-full ml-2 text-2xl Mexicanero text-center text-white neonGreen">From the Grill</p>
         {dishes.map((obj,idx)=> <CardFood key={idx} dish={obj.dish} ingredients={obj.ingredients} price={obj.price} src={obj.src}></CardFood>)}
 
         

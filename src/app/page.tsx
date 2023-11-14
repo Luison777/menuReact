@@ -159,7 +159,7 @@ export default function Home() {
   return (
     <>
     
-    <p className="block text-black w-full ml-2 text-2xl Mexicanero text-center text-orange-500">Favorites</p>
+    <p className="block  w-full ml-2 text-2xl Mexicanero text-center text-white neonGreen">Favorites</p>
     {dishes.map((obj,idx)=> <CardFood key={idx} dish={obj.dish} ingredients={obj.ingredients} price={obj.price} src={obj.src}></CardFood>)}
     </>
   )

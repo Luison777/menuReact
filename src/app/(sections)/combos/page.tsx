@@ -4,8 +4,8 @@ export default function DrinksPage() {
   
   return (
       <>
-        <p className="block text-black w-full ml-2 text-2xl Mexicanero text-center text-orange-500">Build Your Own Combo</p>
-        <div className="w-full m-2 rounded relative shadow shadow-black text-black p-2">
+        <p className="block  w-full ml-2 text-2xl Mexicanero text-center text-white neonGreen">Build Your Own Combo</p>
+        <div className="w-full  rounded  text-white border-2 m-2 p-2">
            <p className="text-center">Two entrees and two Sides $11.49</p>
            <p className="text-center">Three entrees and two Sides $12.49</p>
            <p className="text-center mb-2">Four entrees and two Sides $13.49</p>

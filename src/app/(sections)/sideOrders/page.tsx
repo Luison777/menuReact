@@ -207,36 +207,36 @@ export default function SideOrdersPage() {
   ]
   return (
       <>
-        <p className="block text-black w-full ml-2 text-2xl Mexicanero text-center text-orange-500">Side Orders</p>
-        <div className="w-full p-2 m-2 rounded shadow shadow-black text-black text-center text-xs">
+        <p className="block  w-full ml-2 text-2xl Mexicanero text-center text-white neonGreen">Side Orders</p>
+        <div className="w-full  rounded  text-white text-xs border-2 m-2 text-center">
           With nacho cheese, add $1.25 extra.  
         </div>
         {side.map((obj,idx)=> <CardFood key={idx} dish={obj.dish} ingredients={obj.ingredients} price={obj.price} src={obj.src}></CardFood>)}
-        <p className="block text-black w-full ml-2 text-2xl Mexicanero text-center text-orange-500">Burritos</p>
-        <div className="w-full p-2 m-2 rounded shadow shadow-black text-black text-center text-xs">
+        <p className="block  w-full ml-2 text-2xl Mexicanero text-center text-white neonGreen">Burritos</p>
+        <div className="w-full  rounded  text-white text-xs border-2 m-2 text-center">
           Lettuce shredded cheese, add $0.99, with cheese dip add $1.25
         </div>
         {burritos.map((obj,idx)=> <CardFood key={idx} dish={obj.dish} ingredients={obj.ingredients} price={obj.price} src={obj.src}></CardFood>)}
 
-        <p className="block text-black w-full ml-2 text-2xl Mexicanero text-center text-orange-500">Enchiladas</p>
-        <div className="w-full p-2 m-2 rounded shadow shadow-black text-black text-center text-xs">
+        <p className="block  w-full ml-2 text-2xl Mexicanero text-center text-white neonGreen">Enchiladas</p>
+        <div className="w-full  rounded  text-white text-xs border-2 m-2 text-center">
         With nacho cheese, add $1.25 extra.  
         </div>
         {enchiladas.map((obj,idx)=> <CardFood key={idx} dish={obj.dish} ingredients={obj.ingredients} price={obj.price} src={obj.src}></CardFood>)}
 
-        <p className="block text-black w-full ml-2 text-2xl Mexicanero text-center text-orange-500">Quesadillas</p>
+        <p className="block  w-full ml-2 text-2xl Mexicanero text-center text-white neonGreen">Quesadillas</p>
         {quesadillas.map((obj,idx)=> <CardFood key={idx} dish={obj.dish} ingredients={obj.ingredients} price={obj.price} src={obj.src}></CardFood>)}
 
-        <p className="block text-black w-full ml-2 text-2xl Mexicanero text-center text-orange-500">Tacos</p>
-        <div className="w-full p-2 m-2 rounded shadow shadow-black text-black text-center text-xs">
+        <p className="block  w-full ml-2 text-2xl Mexicanero text-center text-white neonGreen">Tacos</p>
+        <div className="w-full  rounded  text-white text-xs border-2 m-2 text-center">
           Grilled steak or chicken add $1.00 per taco
         </div>
         {tacos.map((obj,idx)=> <CardFood key={idx} dish={obj.dish} ingredients={obj.ingredients} price={obj.price} src={obj.src}></CardFood>)}
 
-        <p className="block text-black w-full ml-2 text-2xl Mexicanero text-center text-orange-500">Tostadas</p>
+        <p className="block  w-full ml-2 text-2xl Mexicanero text-center text-white neonGreen">Tostadas</p>
         {tostadas.map((obj,idx)=> <CardFood key={idx} dish={obj.dish} ingredients={obj.ingredients} price={obj.price} src={obj.src}></CardFood>)}
 
-        <p className="block text-black w-full ml-2 text-2xl Mexicanero text-center text-orange-500">Tostaguacs</p>
+        <p className="block  w-full ml-2 text-2xl Mexicanero text-center text-white neonGreen">Tostaguacs</p>
         {tostaguacs.map((obj,idx)=> <CardFood key={idx} dish={obj.dish} ingredients={obj.ingredients} price={obj.price} src={obj.src}></CardFood>)}
 
         

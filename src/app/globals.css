@@ -16,7 +16,7 @@
 }
 @font-face {
   font-family: 'Mexicanero';
-  src: url('../fonts/Mexicanero-Italic.otf') format('opentype');
+  src: url('../fonts/Mexicana.ttf') format('truetype');
 
 }
 
@@ -25,17 +25,28 @@
   src: url('../fonts/LobsterTwo-Italic.ttf') format('truetype');
 
 }
+@font-face {
+  font-family: 'Title';
+  src: url('../fonts/ROADSTORE\ Dafont.ttf') format('truetype');
 
+}
 .Mexicanero {
   font-family: 'Mexicanero', sans-serif;
 }
 .Lobster {
   font-family: 'Lobster', sans-serif;
 }
+.Title{
+  font-family: 'Title', sans-serif;
+}
 
+.neon {
+  color: #fff; /* Cambiar el color del texto a blanco para que el resplandor sea más visible */
+  text-shadow: 0 0 10px rgba(255, 0, 0, 0.8), 0 0 20px rgba(255, 0, 0, 0.8), 0 0 30px rgba(255, 0, 0, 0.8), 0 0 40px rgba(255, 0, 0, 0.8);
+}
 
-body {
- 
-  background-color: rgb(50, 49, 49) ;
+.neonGreen {
+  color: #fff; /* Cambiar el color del texto a blanco para que el resplandor sea más visible */
+  text-shadow: 0 0 10px rgba( 0, 255, 0.8), 0 0 20px rgba(0, 255, 0.8), 0 0 30px rgba(20, 255, 0.8), 0 0 40px rgba(0, 255, 0.8);
 }
 
