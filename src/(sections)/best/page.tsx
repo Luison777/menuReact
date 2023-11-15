@@ -84,7 +84,7 @@ export default function BestPage() {
   
   return (
       <>
-        <p className="block  w-full ml-2 text-2xl Mexicanero text-center text-white neonGreen">Mexico's Best</p>
+        <p className="block  w-full ml-2 text-2xl Mexicanero text-center text-white neonGreen">Mexico&apos;s Best</p>
         {dishes.map((obj,idx)=> <CardFood key={idx} dish={obj.dish} ingredients={obj.ingredients} price={obj.price} src={obj.src}></CardFood>)}
       </>
     )

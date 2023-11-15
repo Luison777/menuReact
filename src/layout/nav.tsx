@@ -2,7 +2,7 @@
 import '@/app/globals.css'
 import { usePathname } from 'next/navigation'
 import { useRouter } from 'next/navigation'
-
+import Image from 'next/image'
 
 
         export default function Nav(){
@@ -10,13 +10,13 @@ import { useRouter } from 'next/navigation'
         const router = useRouter()
         const style='text-center h-full flex items-center p-2 neon';
         const active='shadow-inner shadow-white rounded';
-
+        const imgStyle={objectFit: 'cover'}
         
 
     return(
         <>
        <nav className={`w-full h-16 rounded-t-lg fixed bottom-0 z-50 text-white bg-white pt-[2px] `}>
-       <img src="./pared2.jpg" alt="pared" className="absolute bg-cover w-full rounded" />
+       <Image src="/pared2.jpg" alt="pared" fill={true} style={imgStyle} />
             <ul className="flex items-center justify-center h-[93%] overflow-x-auto p-1 Lobster relative z-50 rounded">
                 <li className={`${style} ${pathname=='/'? active:''}`} onClick={()=>router.push('/')}>
                         Breakfast
