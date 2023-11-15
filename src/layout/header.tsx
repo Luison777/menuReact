@@ -1,7 +1,7 @@
 export default function Header(){
     return(
         <header className="w-full h-40 overflow-hidden flex justify-center relative">
-            <img src="./pared.jpg" alt="pared" className="absolute bg-cover h-full" />
+            <img src="./paredbanner.png" alt="pared" className="absolute object-cover h-full" />
            <div className="Title -rotate-6 text-center flex items-center text-3xl">
                 <p className="neon">Casa <br /> <span>Mexicana</span> </p>
            </div>

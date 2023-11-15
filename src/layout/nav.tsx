@@ -15,10 +15,23 @@ import { useRouter } from 'next/navigation'
 
     return(
         <>
-       <nav className={`w-full h-16 rounded-t-lg fixed bottom-0 z-50 text-white bg-white pt-[2px]`}>
+       <nav className={`w-full h-16 rounded-t-lg fixed bottom-0 z-50 text-white bg-white pt-[2px] `}>
        <img src="./pared2.jpg" alt="pared" className="absolute bg-cover w-full rounded" />
-            <ul className="flex items-center h-[93%] overflow-x-auto p-1 Lobster relative z-50 rounded">
+            <ul className="flex items-center justify-center h-[93%] overflow-x-auto p-1 Lobster relative z-50 rounded">
                 <li className={`${style} ${pathname=='/'? active:''}`} onClick={()=>router.push('/')}>
+                        Breakfast
+                </li>
+                <li className={`${style} ${pathname=='/main'? active:''}`}  onClick={()=>router.push('/main')}>
+                        Main course
+                </li>
+                <li className={`${style}   ${pathname=='/desserts'? active:''}`}  onClick={()=>router.push('/desserts')}>
+                        Desserts
+                </li>
+                <li className={`${style} ${pathname=='/drinks'? active:''}`}  onClick={()=>router.push('/drinks')}>
+                       Drinks
+                </li>
+              
+               { /*<li className={`${style} ${pathname=='/'? active:''}`} onClick={()=>router.push('/')}>
                         Favorites
                 </li>
                 <li className={`${style} ${pathname=='/apetizers'? active:''}`}  onClick={()=>router.push('/apetizers')}>
@@ -59,7 +72,7 @@ import { useRouter } from 'next/navigation'
                 </li>
                 <li className={`${style}  ${pathname=='/mixedDrinks'? active:''}`}  onClick={()=>router.push('/mixedDrinks')}>
                         Mixed Drinks
-                </li>
+                 </li>*/}
             </ul>
         </nav>
  

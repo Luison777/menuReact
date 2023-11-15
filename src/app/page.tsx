@@ -156,11 +156,30 @@ export default function Home() {
       src: ""
     }
   ]
+  const listaMock=[
+    {
+      dish: "Traditional Breakfast",
+      ingredients: "Eggs, bacon, toast, tomatoes",
+      price: "$8.99",
+      src: "break1.jpg"
+    },
+    {
+      dish: "Vegetable Omelette",
+      ingredients: "Eggs, spinach, mushrooms, cheese",
+      price: "$9.99",
+      src: "break2.jpg"
+    },
+    {
+      dish: "Fruit Smoothie Bowl",
+      ingredients: "Banana, strawberries, blueberries, granola",
+      price: "$7.49",
+      src: "break3.jpeg"
+    }]
   return (
     <>
     
-    <p className="block  w-full ml-2 text-2xl Mexicanero text-center text-white neonGreen">Favorites</p>
-    {dishes.map((obj,idx)=> <CardFood key={idx} dish={obj.dish} ingredients={obj.ingredients} price={obj.price} src={obj.src}></CardFood>)}
+    <p className="block  w-full ml-2 text-2xl Mexicanero text-center text-white neonGreen">Breakfast</p>
+    {listaMock.map((obj,idx)=> <CardFood key={idx} dish={obj.dish} ingredients={obj.ingredients} price={obj.price} src={obj.src}></CardFood>)}
     </>
   )
 }
