@@ -10,14 +10,14 @@ import Image from 'next/image'
         const router = useRouter()
         const style='text-center h-full flex items-center p-2 neon';
         const active='shadow-inner shadow-white rounded';
-        const imgStyle={objectFit: 'cover'}
+       
         
 
     return(
         <>
-       <nav className={`w-full h-16 rounded-t-lg fixed bottom-0 z-50 text-white bg-white pt-[2px] `}>
-       <Image src="/pared2.jpg" alt="pared" fill={true} style={imgStyle} />
-            <ul className="flex items-center justify-center h-[93%] overflow-x-auto p-1 Lobster relative z-50 rounded">
+       <nav className={`w-full h-16 rounded-t-lg fixed bottom-0 z-50 text-white  pt-[2px] overflow-hidden border-t-2`}>
+       <Image src="/pared2.jpg" alt="pared" fill={true} objectFit="cover" />
+            <ul className="flex items-center  h-[93%] overflow-x-auto p-1 Lobster relative z-50 rounded">
                 <li className={`${style} ${pathname=='/'? active:''}`} onClick={()=>router.push('/')}>
                         Breakfast
                 </li>
@@ -30,6 +30,7 @@ import Image from 'next/image'
                 <li className={`${style} ${pathname=='/drinks'? active:''}`}  onClick={()=>router.push('/drinks')}>
                        Drinks
                 </li>
+             
               
                { /*<li className={`${style} ${pathname=='/'? active:''}`} onClick={()=>router.push('/')}>
                         Favorites

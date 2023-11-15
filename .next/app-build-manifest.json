@@ -1,0 +1,52 @@
+{
+  "pages": {
+    "/_not-found": [
+      "static/chunks/webpack-978748c0e03eff75.js",
+      "static/chunks/fd9d1056-bdbc21787612b876.js",
+      "static/chunks/864-1802646cc7a21fff.js",
+      "static/chunks/main-app-75edab10940d9a93.js",
+      "static/chunks/app/_not-found-be6954023b538636.js"
+    ],
+    "/layout": [
+      "static/chunks/webpack-978748c0e03eff75.js",
+      "static/chunks/fd9d1056-bdbc21787612b876.js",
+      "static/chunks/864-1802646cc7a21fff.js",
+      "static/chunks/main-app-75edab10940d9a93.js",
+      "static/chunks/964-ed97cb209e7a86b0.js",
+      "static/css/679ef4f30ea2138a.css",
+      "static/chunks/app/layout-f8b52dfc1afd489d.js"
+    ],
+    "/page": [
+      "static/chunks/webpack-978748c0e03eff75.js",
+      "static/chunks/fd9d1056-bdbc21787612b876.js",
+      "static/chunks/864-1802646cc7a21fff.js",
+      "static/chunks/main-app-75edab10940d9a93.js",
+      "static/chunks/964-ed97cb209e7a86b0.js",
+      "static/chunks/app/page-c0765d4e8e83dbe6.js"
+    ],
+    "/(sections)/drinks/page": [
+      "static/chunks/webpack-978748c0e03eff75.js",
+      "static/chunks/fd9d1056-bdbc21787612b876.js",
+      "static/chunks/864-1802646cc7a21fff.js",
+      "static/chunks/main-app-75edab10940d9a93.js",
+      "static/chunks/964-ed97cb209e7a86b0.js",
+      "static/chunks/app/(sections)/drinks/page-975563ad54c85f7c.js"
+    ],
+    "/(sections)/main/page": [
+      "static/chunks/webpack-978748c0e03eff75.js",
+      "static/chunks/fd9d1056-bdbc21787612b876.js",
+      "static/chunks/864-1802646cc7a21fff.js",
+      "static/chunks/main-app-75edab10940d9a93.js",
+      "static/chunks/964-ed97cb209e7a86b0.js",
+      "static/chunks/app/(sections)/main/page-b45cf09133f46d1a.js"
+    ],
+    "/(sections)/desserts/page": [
+      "static/chunks/webpack-978748c0e03eff75.js",
+      "static/chunks/fd9d1056-bdbc21787612b876.js",
+      "static/chunks/864-1802646cc7a21fff.js",
+      "static/chunks/main-app-75edab10940d9a93.js",
+      "static/chunks/964-ed97cb209e7a86b0.js",
+      "static/chunks/app/(sections)/desserts/page-cb53d5d854165eee.js"
+    ]
+  }
+}
