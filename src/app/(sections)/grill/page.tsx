@@ -102,8 +102,8 @@ export default function GrillPage() {
   
   return (
       <>
-        <div className="w-full  rounded  text-white text-xs border-2 m-2 text-center">
-          <p className="text-red-500">Fajitas are served on VERY HOT skillest</p>
+        <div className="w-full  rounded  text-white text-xs border-2 m-2 text-center p-2">
+          <p className="text-red-500 ">Fajitas are served on VERY HOT skillest</p>
           We use oor special recipe to cook tender strips of marinated chicken breast, steak or shripm. All fajitas are
           cooked with bell peppers, sauteed onions and tomatoes. Garnished on the side with lettuce, guacamole, sour cream,
           pico de gallo, rice and beans.

@@ -59,7 +59,7 @@ export default function ChildsPage() {
   return (
       <>
         <p className="block w-full ml-2 text-2xl Mexicanero text-center text-white neonGreen">Child's Menu</p>
-        <p className=" ml-2 text-[12px] text-red-500 text-center">This Menu applies to children under 10 years of age.Add $2.00 for adults. Soft Drinks included. No soft drinks on to-go orders. For cheese sauce on any item $1.15 extra</p>
+        <p className=" m-2 text-[12px] text-red-500 text-center">This Menu applies to children under 10 years of age.Add $2.00 for adults. Soft Drinks included. No soft drinks on to-go orders. For cheese sauce on any item $1.15 extra</p>
         {dishes.map((obj,idx)=> <CardFood key={idx} dish={obj.dish} ingredients={obj.ingredients} price={obj.price} src={obj.src}></CardFood>)}
       </>
     )
