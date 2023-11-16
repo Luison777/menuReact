@@ -8,71 +8,60 @@ import Image from 'next/image'
         export default function Nav(){
         const pathname = usePathname();
         const router = useRouter()
-        const style='text-center h-full flex items-center p-2 neon';
+        const style='text-center h-full flex items-center p-2 ';
         const active='shadow-inner shadow-white rounded';
-        const imgStyle={objectFit: 'cover'}
+    
         
 
     return(
         <>
-       <nav className={`w-full h-16 rounded-t-lg fixed bottom-0 z-50 text-white bg-white pt-[2px] `}>
-       <Image src="/pared2.jpg" alt="pared" fill={true} style={imgStyle} />
-            <ul className="flex items-center justify-center h-[93%] overflow-x-auto p-1 Lobster relative z-50 rounded">
-                <li className={`${style} ${pathname=='/'? active:''}`} onClick={()=>router.push('/')}>
-                        Breakfast
-                </li>
-                <li className={`${style} ${pathname=='/main'? active:''}`}  onClick={()=>router.push('/main')}>
-                        Main course
-                </li>
-                <li className={`${style}   ${pathname=='/desserts'? active:''}`}  onClick={()=>router.push('/desserts')}>
-                        Desserts
-                </li>
-                <li className={`${style} ${pathname=='/drinks'? active:''}`}  onClick={()=>router.push('/drinks')}>
-                       Drinks
-                </li>
+       <nav className={`w-full h-16 rounded-t-lg fixed bottom-0 z-50 text-white  pt-[2px] overflow-hidden border-t-2`}>
+       <Image src="/parednegra.webp" alt="pared" fill={true} objectFit="cover" />
+            <ul className="flex items-center  h-[93%] overflow-x-auto p-1 Lobster relative z-50 rounded">
+                
               
-               { /*<li className={`${style} ${pathname=='/'? active:''}`} onClick={()=>router.push('/')}>
-                        Favorites
+                <li className={`${style} ${pathname=='/'? active:''}`} onClick={()=>router.push('/')}>
+                       <button className='neon'> Favorites</button>
                 </li>
                 <li className={`${style} ${pathname=='/apetizers'? active:''}`}  onClick={()=>router.push('/apetizers')}>
-                        Appetizers
+                        <button className='neon'> Appetizers</button>
                 </li>
                 <li className={`${style}   ${pathname=='/especialidades'? active:''}`}  onClick={()=>router.push('/especialidades')}>
-                        Especialidades
+                        <button className='neon'> Especialidades</button>
                 </li>
                 <li className={`${style} ${pathname=='/childs'? active:''}`}  onClick={()=>router.push('/childs')}>
-                       Child's Menu
+                        <button className='neon'> Child&apos;s Menu</button>
                 </li>
                 <li className={`${style} ${pathname=='/best'? active:''}`}  onClick={()=>router.push('/best')}>
-                        Mexico's Best
+                <button className='neon'>Mexico&apos;s Best</button>
                 </li>
                 <li className={`${style}  ${pathname=='/chicken'? active:''}`}  onClick={()=>router.push('/chicken')}>
-                        Chicken Dishes
+                <button className='neon'>Chicken Dishes</button>
                 </li>
                 <li className={`${style} whitespace-nowrap  ${pathname=='/grill'? active:''}`}  onClick={()=>router.push('/grill')}>
-                        From the <br /> Grill
+                <button className='neon'>From the <br /> Grill</button>
                 </li>
                 <li className={`${style} ${pathname=='/seafood'? active:''}`}  onClick={()=>router.push('/seafood')}>
-                         Seafood 
+                <button className='neon'>Seafood </button>
                 </li>
                 <li className={`${style} ${pathname=='/casasFavorites'? active:''}`}  onClick={()=>router.push('/casasFavorites')}>
-                        Casa's <br />Favorite 
+                <button className='neon'>Casa&apos;s <br />Favorite </button>
                 </li>
                 <li className={`${style}  ${pathname=='/sideOrders'? active:''}`}  onClick={()=>router.push('/sideOrders')}>
-                        Side Orders
+                <button className='neon'>Side Orders</button>
                 </li>
                 <li className={`${style} ${pathname=='/vegetarian'? active:''}`}  onClick={()=>router.push('/vegetarian')}>
-                        Vegetarian Dishes
+                <button className='neon'>Vegetarian Dishes</button>
                 </li>
                 <li className={`${style}  ${pathname=='/combos'? active:''}`}  onClick={()=>router.push('/combos')}>
-                        Combos
+                <button className='neon'>Combos</button>
                 </li>
                 <li className={`${style}  ${pathname=='/desserts'? active:''}`}  onClick={()=>router.push('/desserts')}>
-                        Desserts
+                <button className='neon'>Desserts</button>
                 </li>
                 <li className={`${style}  ${pathname=='/mixedDrinks'? active:''}`}  onClick={()=>router.push('/mixedDrinks')}>
-                        Mixed Drinks
-                 </li>*/}
+                <button className='neon'>Mixed Drinks</button>
+                 </li>
             </ul>
         </nav>
  

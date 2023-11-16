@@ -179,7 +179,7 @@ export default function Home() {
     <>
     
     <p className="block  w-full ml-2 text-2xl Mexicanero text-center text-white neonGreen">Breakfast</p>
-    {listaMock.map((obj,idx)=> <CardFood key={idx} dish={obj.dish} ingredients={obj.ingredients} price={obj.price} src={obj.src}></CardFood>)}
+    {dishes.map((obj,idx)=> <CardFood key={idx} dish={obj.dish} ingredients={obj.ingredients} price={obj.price} src={obj.src}></CardFood>)}
     </>
   )
 }
