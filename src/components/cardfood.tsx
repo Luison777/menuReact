@@ -20,7 +20,7 @@ export default function CardFood(props:CardProps){
             <div className=" px-2 my-1 w-[100%] min-h-[100px] relative z-40 ">
                 <div className={`${props.ingredients ? 'float-left mr-2 mb-2 w-[150px]' : ''} relative rounded overflow-hidden `}>
                     <Image
-                        src={`/pozole.webp`}
+                        src={props.src? props.src:'/pozole.webp'}
                         alt={props.src}
                         height={400}
                         width={400}
