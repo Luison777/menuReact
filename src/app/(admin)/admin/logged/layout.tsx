@@ -11,9 +11,7 @@ export default function RootLayout({
   const pathname = usePathname();
   const router=useRouter();
   return (
-    <html lang="en" className="w-full h-full">
-      <body className="w-full h-full ">
-          <main className="w-full h-full p-2 bg-gradient-to-r from-white to-neutral-300">
+          <main className="w-full h-full p-2 ">
             <div className="flex justify-between w-full mb-2 text-white text-lg">
               <button onClick={()=> router.push('/admin/logged/create')} className={`flex-1 h-10 rounded shadow shadow-black mr-2 bg-gradient-to-r from-lime-400 to-lime-500 ${pathname=='/admin/logged/create'? 'border-4 border-black':'' }`}>
                 Create</button>
@@ -24,7 +22,5 @@ export default function RootLayout({
             </div>
             {children}
           </main>
-      </body>
-    </html>
   )
 }

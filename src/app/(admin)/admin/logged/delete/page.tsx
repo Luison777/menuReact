@@ -2,19 +2,27 @@
 
 import { FormEvent,  useState,  ChangeEvent, useEffect } from 'react';
 import CardFood from "@/components/cardfood";
+
 interface Dish {
     dish: string;
     ingredients: string;
     price: string;
     src: string;
   }
+  
+  interface Dishes {
+    orden: number[];
+    objetos: Record<string, Dish>;
+  }
+  
 export default function DeletePage(){
     const [preview,setPreview]=useState({
         dish:'', ingredients:'', price:'', src:''
     });
     const [selectedValue, setSelectedValue] = useState('');
     const [selectedOption, setSelectedOption] = useState('');
-    const dishes={
+
+    const dishes: Dishes ={
         orden:[0,1,2,3,4,5],
         objetos:{
         0:{
@@ -116,7 +124,8 @@ export default function DeletePage(){
                 </div>
             </div>
             <div className='w-full lg:w-[48%] ml-2 text-center text-red-500  '>
-                <p className='h-14 ml-2 text-center text-red-500'>This action will delete the selected option. Please ensure that you have selected the correct option.</p>           
+                <p className='h-14 ml-2 text-center text-red-500'>This action will delete the selected option.
+                 Please ensure that you have selected the correct option.</p>           
                 <button className='bg-white text-black border-4 border-red-500 w-full h-10 rounded shadow shadow-black text-lg  hover:border-white hover:bg-red-500 hover:text-white '>
                     DELETE</button>
             </div>

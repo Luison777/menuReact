@@ -10,8 +10,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="w-full h-full">
-      <body className="w-full h-full">{children}</body>
+    <html lang="en">
+      <body className='bg-gradient-to-r from-white to-neutral-300'>{children}</body>
     </html>
   )
 }

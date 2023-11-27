@@ -2,19 +2,21 @@
 import Image from 'next/image'
 import { FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation'
+import { dishesRequest } from '@/services/request';
 export default function AdminPage(){
     const [seePassword, setSeePassword]=useState(false);
     const router=useRouter();
-    function login(e: FormEvent<HTMLFormElement>){
+    async function  login(e: FormEvent<HTMLFormElement>){
 
         e.preventDefault();
         const form = e.target as HTMLFormElement;
         const formData = new FormData(form);
         const formJson = Object.fromEntries(formData.entries());
         router.push('/admin/logged');
-       
+        
 
     }
+   
     return(
         <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center bg-black">
             <div className="p-1 bg-gradient-to-r from-cyan-500 to-blue-500 lg:w-1/3 rounded shadow-2xl shadow-cyan-500/50">
