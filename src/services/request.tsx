@@ -35,24 +35,25 @@ export async function updateDish(table:string,dish:string){
     //console.log('meta creada',metaCreada);
     return createDish;
 }
-/*
-export async function actualizarMeta(meta,id){
-    const response=await fetch(`/api/metas/${id}`,{
-        method:'PUT',
-        body:JSON.stringify(meta),
-        headers:{
-            'content-type':'application/json; charset=utf-8'
-        }
-    });
-    const metaActualizada=await response.json();
-    //console.log('meta actualizada',metaActualizada);
-    return metaActualizada;
-}
-export async function borrarMeta(id){
-   await fetch(`/api/metas/${id}`,{
-        method:'DELETE'
-    });
-    
-    console.log('meta borrada',id);
+
+export async function deleteDish(table: string): Promise<string> {
+    try {
+      const response = await fetch(backendUrl + table, {
+        method: 'DELETE'
+      });
   
-}*/
+      if (response.ok) {
+        const data = await response.text();
+        // Manejar la respuesta del servidor aquí
+        console.log('Respuesta del servidor:', data);
+        return data; // Devolver la respuesta para usarla en el frontend
+      } else {
+        throw new Error('Network response was not ok.');
+      }
+    } catch (error) {
+      // Manejar errores de red u otras excepciones
+      console.error('Fetch Error:', error);
+      throw error; // Propagar el error para ser manejado en el frontend si es necesario
+    }
+  }
+  

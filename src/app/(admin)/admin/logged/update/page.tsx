@@ -6,6 +6,7 @@ import { FormEvent,  useState,  ChangeEvent, useEffect } from 'react';
 import CardFood from "@/components/cardfood";
 import { dishesRequest, updateDish } from '@/services/request';
 interface Dish {
+    id: number;
     dish: string;
     ingredients: string;
     price: string;
@@ -21,7 +22,7 @@ export default function UpdatePage(){
     });
     const [selectedValue, setSelectedValue] = useState('/appetizers');
     const [selectedOption, setSelectedOption] = useState('');
-    const [dishes,setDishes]=useState({
+    const [dishes,setDishes]=useState<Dishes>({
         orden:[],
         objetos:{}
     })
@@ -36,7 +37,7 @@ export default function UpdatePage(){
         const formJson = Object.fromEntries(formData.entries());
         const formJsonString=JSON.stringify(formJson);
         await updateDish(`${selectedValue}/${selectedOption}`, formJsonString);
-        router.refresh();
+        
     }
     function onPreview (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>){
         const { name, value } = event.target;
@@ -56,13 +57,13 @@ export default function UpdatePage(){
 
     useEffect(() => {
         dishesRequest(selectedValue)
-            .then(data => {
+            .then((data:Dish[]) => {
                 let newDishes={
-                    orden: data.map(dish=>dish.id),
+                    orden: data.map((dish)=>dish.id),
                     objetos:data.reduce((objeto,dish)=>({...objeto,[dish.id]:dish}),{})
                 }
                 setDishes(newDishes);
-                console.log(newDishes);
+                
             })
             .catch(error => {
                 console.error('Error al obtener los datos:', error);
@@ -95,7 +96,7 @@ export default function UpdatePage(){
                 <div>
                 <select name="section" id="section" className=" rounded shadow shadow-black mb-2 w-full" onChange={option}>
                     {dishes.orden.map(id=> 
-                    <option key={id} value={id}>{dishes.objetos[id].dish}</option> 
+                    <option key={id} value={id}>{dishes.objetos[id]?.dish}</option> 
                     )}
                
                 </select>
