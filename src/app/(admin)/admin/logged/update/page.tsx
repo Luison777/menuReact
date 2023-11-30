@@ -22,6 +22,7 @@ export default function UpdatePage(){
     });
     const [selectedValue, setSelectedValue] = useState('/appetizers');
     const [selectedOption, setSelectedOption] = useState('');
+    const [response, setResponse] = useState('');
     const [dishes,setDishes]=useState<Dishes>({
         orden:[],
         objetos:{}
@@ -36,7 +37,9 @@ export default function UpdatePage(){
         const formData = new FormData(form);
         const formJson = Object.fromEntries(formData.entries());
         const formJsonString=JSON.stringify(formJson);
-        await updateDish(`${selectedValue}/${selectedOption}`, formJsonString);
+        const createResponse=await updateDish(`${selectedValue}/${selectedOption}`, formJsonString);
+        setResponse(createResponse);
+        setTimeout(()=>setResponse(''),2000);
         
     }
     function onPreview (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>){
@@ -129,7 +132,7 @@ export default function UpdatePage(){
                     <CardFood src={''} dish={preview.dish} ingredients={preview.ingredients} price={preview.price} ></CardFood>
                 </div>
             </div>
-            
+            <p className='w-full text-center mt-2 text-green-500'>{response}</p>
         </div>
     )
 }

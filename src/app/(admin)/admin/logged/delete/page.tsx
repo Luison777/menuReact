@@ -3,6 +3,7 @@
 import { FormEvent,  useState,  ChangeEvent, useEffect } from 'react';
 import CardFood from "@/components/cardfood";
 import { deleteDish, dishesRequest } from '@/services/request';
+import { useRouter } from 'next/navigation';
 
 interface Dish {
     id: number;
@@ -21,7 +22,7 @@ export default function DeletePage(){
     const [preview,setPreview]=useState({
         dish:'', ingredients:'', price:'', src:''
     });
-    const [selectedValue, setSelectedValue] = useState('/appetizers');
+    const [selectedValue, setSelectedValue] = useState('');
     const [selectedOption, setSelectedOption] = useState('');
     const [response, setResponse] = useState('');
 
@@ -29,11 +30,29 @@ export default function DeletePage(){
         orden:[],
         objetos:{}
     })
+    const router = useRouter();
 
     async function deleteDishButton(){
-      const result= await deleteDish(`${selectedValue}/${selectedOption}`);
-      setResponse(result);
+        if (selectedValue!==''){
+        const result = await deleteDish(`${selectedValue}/${selectedOption}`);
+        setResponse(result);
+        setTimeout(()=>setResponse(''),2000);
+        dishesRequest(selectedValue)
+          .then((data: Dish[]) => {
+            let newDishes = {
+              orden: data.map((dish) => dish.id),
+              objetos: data.reduce((objeto, dish) => ({ ...objeto, [dish.id]: dish }), {})
+            };
+            setDishes(newDishes);
+          })
+          .catch(error => {
+            console.error('Error al obtener los datos:', error);
+          });
+      }else{
+        setResponse('Please select some section and option first.');
+        setTimeout(()=>setResponse(''),2000);
     }
+      }
   
     function section(event:ChangeEvent<HTMLSelectElement>){
         setSelectedValue(event.target.value);
@@ -44,6 +63,7 @@ export default function DeletePage(){
         setPreview(dishes.objetos[event.target.value]);
     }
     useEffect(() => {
+        if (selectedValue !== '') {
       dishesRequest(selectedValue)
           .then((data:Dish[]) => {
               let newDishes={
@@ -55,8 +75,9 @@ export default function DeletePage(){
           })
           .catch(error => {
               console.error('Error al obtener los datos:', error);
-          });
-  }, [selectedValue]);
+          });}
+ }, [selectedValue]);
+
     return(
         <div className=" rounded shadow shadow-black flex flex-wrap p-2  bg-gradient-to-r from-white to-neutral-300">
             <div className='w-full rounded shadow shadow-black p-2 mb-2'>
@@ -99,9 +120,9 @@ export default function DeletePage(){
             <div className='w-full lg:w-[48%] ml-2 text-center text-red-500  '>
                 <p className='h-14 ml-2 text-center text-red-500'>This action will delete the selected option.
                  Please ensure that you have selected the correct option.</p>           
-                <button onClick={deleteDishButton} className='bg-white text-black border-8 border-red-500 w-full h-10 rounded shadow shadow-black text-lg  hover:border-white hover:bg-red-500 hover:text-white '>
+                <button onClick={deleteDishButton} className='bg-white text-black border-8 border-red-500 w-full h-10 rounded shadow shadow-black text-lg  hover:bg-red-500 hover:text-white '>
                     DELETE</button>
-                <p className={`${response!==''? 'text-green/500':'' }`}>{response}</p>
+                <p className={`${response!==''? 'text-green/500':'' } mt-10`}>{response}</p>
             </div>
         </div>
     )

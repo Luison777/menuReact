@@ -9,6 +9,7 @@ export default function CreatePage(){
         dish:'', ingredients:'', price:'', src:''
     });
     const [selectedValue, setSelectedValue] = useState('');
+    const [response, setResponse] = useState('');
     async function done(e: FormEvent<HTMLFormElement>){
 
         e.preventDefault();
@@ -17,7 +18,9 @@ export default function CreatePage(){
         const formJson = Object.fromEntries(formData.entries());
         const formJsonString=JSON.stringify(formJson);
         
-        await createDish(selectedValue, formJsonString);
+        const createResponse= await createDish(selectedValue, formJsonString);
+        setResponse(createResponse);
+        setTimeout(()=>setResponse(''),2000);
     }
 
     function onPreview (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>){
@@ -80,7 +83,7 @@ export default function CreatePage(){
                     <CardFood src={preview.src} dish={preview.dish} ingredients={preview.ingredients} price={preview.price} ></CardFood>
                 </div>
             </div>
-            
+            <p className='w-full text-center mt-2 text-green-500'>{response}</p>
         </div>
     )
 }

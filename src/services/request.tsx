@@ -11,6 +11,7 @@ export async function dishesRequest(table:string){
 
 
 export async function createDish(table:string,dish:string){
+  try{
     const response=await fetch(backendUrl+table,{
         method:'POST',
         body:dish,
@@ -19,11 +20,21 @@ export async function createDish(table:string,dish:string){
         }
     });
     const createDish=await response.json();
-    //console.log('meta creada',metaCreada);
-    return createDish;
+    if (response.ok) {
+      return 'The dish has been created successfully.'
+    } else {
+      return 'Something wrong has occurred. Please try again.'
+    }
+    }
+    catch(error) {
+      // Manejar errores de red u otras excepciones
+      console.error('Fetch Error:', error);
+      throw error; // Propagar el error para ser manejado en el frontend si es necesario
+    }
 }
 
 export async function updateDish(table:string,dish:string){
+  try{
     const response=await fetch(backendUrl+table,{
         method:'PUT',
         body:dish,
@@ -32,8 +43,18 @@ export async function updateDish(table:string,dish:string){
         }
     });
     const createDish=await response.json();
-    //console.log('meta creada',metaCreada);
-    return createDish;
+
+    if (response.ok) {
+      return 'The dish has been updated successfully.'
+    } else {
+      return 'Something wrong has occurred. Please try again.'
+    }
+    }
+    catch(error) {
+      // Manejar errores de red u otras excepciones
+      console.error('Fetch Error:', error);
+      throw error; // Propagar el error para ser manejado en el frontend si es necesario
+    }
 }
 
 export async function deleteDish(table: string): Promise<string> {
@@ -43,12 +64,9 @@ export async function deleteDish(table: string): Promise<string> {
       });
   
       if (response.ok) {
-        const data = await response.text();
-        // Manejar la respuesta del servidor aquí
-        console.log('Respuesta del servidor:', data);
-        return data; // Devolver la respuesta para usarla en el frontend
+        return 'The dish has been deleted successfully.'
       } else {
-        throw new Error('Network response was not ok.');
+        return 'Something wrong has occurred. Please try again.'
       }
     } catch (error) {
       // Manejar errores de red u otras excepciones
