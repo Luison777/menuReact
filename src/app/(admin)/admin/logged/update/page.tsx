@@ -11,6 +11,7 @@ interface Dish {
     ingredients: string;
     price: string;
     src: string;
+    srcName: string;
   }
   interface Dishes {
     orden: number[];
@@ -18,7 +19,7 @@ interface Dish {
   }
 export default function UpdatePage(){
     const [preview,setPreview]=useState({
-        dish:'', ingredients:'', price:'', src:''
+        dish:'', ingredients:'', price:'', src:'', srcName:''
     });
     const [selectedValue, setSelectedValue] = useState('/appetizers');
     const [selectedOption, setSelectedOption] = useState('');
@@ -35,6 +36,7 @@ export default function UpdatePage(){
         e.preventDefault();
         const form = e.target as HTMLFormElement;
         const formData = new FormData(form);
+        formData.set('src',preview.srcName);
         const formJson = Object.fromEntries(formData.entries());
         const formJsonString=JSON.stringify(formJson);
         const createResponse=await updateDish(`${selectedValue}/${selectedOption}`, formJsonString);
@@ -72,7 +74,25 @@ export default function UpdatePage(){
                 console.error('Error al obtener los datos:', error);
             });
     }, [selectedValue]);
-  
+    function handleImageChange(e: React.ChangeEvent<HTMLInputElement>){
+        e.preventDefault();
+        const file = e.target.files && e.target.files[0];
+       
+        if (file) {
+            const imageName = file.name;
+            
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPreview({
+                    ...preview,
+                    src: reader.result as string, // Asigna el resultado de la lectura como el src de la imagen
+                    srcName: imageName
+                });
+               
+            };
+            reader.readAsDataURL(file); // Lee la imagen como un data URL
+        }
+    }
     return(
         <div className=" rounded shadow shadow-black flex flex-wrap p-2 mb-2 bg-gradient-to-r from-white to-neutral-300">
             <div className='w-full rounded shadow shadow-black p-2 mb-2'>
@@ -121,7 +141,7 @@ export default function UpdatePage(){
                 </div>
                 <div className="flex mb-2">
                     <p>Picture:</p>
-                    <input className="shadow shadow-black rounded ml-2 w-full p-2"  type="file" accept="image/*" name="src" onChange={onPreview} />
+                    <input className="shadow shadow-black rounded ml-2 w-full p-2"  type="file" accept="image/*" name="src" onChange={handleImageChange} />
                 </div>
                 <button  className="bg-gradient-to-r from-cyan-500 to-blue-500 w-full rounded shadow shadow-black h-10 text-white" type="submit">
                     Done</button>
@@ -129,7 +149,7 @@ export default function UpdatePage(){
             <div className="shadow shadow-black rounded w-full lg:w-1/2 p-2 min-h-[250px] bg-black ">
                 <p className='w-full text-white  text-center'>Preview</p> 
                 <div className='flex justify-center'>
-                    <CardFood src={''} dish={preview.dish} ingredients={preview.ingredients} price={preview.price} ></CardFood>
+                    <CardFood src={preview.src} dish={preview.dish} ingredients={preview.ingredients} price={preview.price} ></CardFood>
                 </div>
             </div>
             <p className='w-full text-center mt-2 text-green-500'>{response}</p>

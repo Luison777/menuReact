@@ -6,7 +6,7 @@ import { createDish } from '@/services/request';
 
 export default function CreatePage(){
     const [preview,setPreview]=useState({
-        dish:'', ingredients:'', price:'', src:''
+        dish:'', ingredients:'', price:'', src:'',srcName:''
     });
     const [selectedValue, setSelectedValue] = useState('');
     const [response, setResponse] = useState('');
@@ -15,7 +15,9 @@ export default function CreatePage(){
         e.preventDefault();
         const form = e.target as HTMLFormElement;
         const formData = new FormData(form);
+        formData.set('src',preview.srcName);
         const formJson = Object.fromEntries(formData.entries());
+
         const formJsonString=JSON.stringify(formJson);
         
         const createResponse= await createDish(selectedValue, formJsonString);
@@ -34,6 +36,25 @@ export default function CreatePage(){
     function section(event:ChangeEvent<HTMLSelectElement>){
         setSelectedValue(event.target.value);
   
+    }
+    function handleImageChange(e: React.ChangeEvent<HTMLInputElement>){
+        e.preventDefault();
+        const file = e.target.files && e.target.files[0];
+       
+        if (file) {
+            const imageName = file.name;
+            
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPreview({
+                    ...preview,
+                    src: reader.result as string, // Asigna el resultado de la lectura como el src de la imagen
+                    srcName: imageName
+                });
+               
+            };
+            reader.readAsDataURL(file); // Lee la imagen como un data URL
+        }
     }
     return(
         <div className=" rounded shadow shadow-black flex flex-wrap p-2 mb-2 bg-gradient-to-r from-white to-neutral-300">
@@ -73,7 +94,7 @@ export default function CreatePage(){
                 </div>
                 <div className="flex mb-2">
                     <p>Picture:</p>
-                    <input className="shadow shadow-black rounded ml-2 w-full p-2" type="file" accept="image/*" name="src" onChange={onPreview} />
+                    <input className="shadow shadow-black rounded ml-2 w-full p-2" type="file" accept="image/*" name="src" onChange={handleImageChange} />
                 </div>
                 <button  className="bg-gradient-to-r from-cyan-500 to-blue-500 w-full rounded shadow shadow-black h-10 text-white" type="submit">Done</button>
             </form>
