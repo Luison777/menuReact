@@ -9,15 +9,11 @@ export async function dishesRequest(table:string){
     return dishes;
 }
 
-
-export async function createDish(table:string,dish:string){
+export async function createDish(table:string,dish:FormData){
   try{
     const response=await fetch(backendUrl+table,{
         method:'POST',
         body:dish,
-        headers:{
-            'content-type':'application/json; charset=utf-8'
-        }
     });
     const createDish=await response.json();
     if (response.ok) {
@@ -33,14 +29,12 @@ export async function createDish(table:string,dish:string){
     }
 }
 
-export async function updateDish(table:string,dish:string){
+export async function updateDish(table:string,dish:FormData){
   try{
     const response=await fetch(backendUrl+table,{
         method:'PUT',
         body:dish,
-        headers:{
-            'content-type':'application/json; charset=utf-8'
-        }
+       
     });
     const createDish=await response.json();
 
@@ -74,4 +68,17 @@ export async function deleteDish(table: string): Promise<string> {
       throw error; // Propagar el error para ser manejado en el frontend si es necesario
     }
   }
-  
+
+ export async function imgRequest(resource: string): Promise<Blob> {
+    try {
+      const response = await fetch(backendUrl + '/images/' + resource);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      
+      return response.blob();
+    } catch (error) {
+      console.error('Error fetching the image:', error);
+      throw error;
+    }
+  }

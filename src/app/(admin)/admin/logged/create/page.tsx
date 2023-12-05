@@ -2,7 +2,7 @@
 
 import { FormEvent,  useState,  ChangeEvent } from 'react';
 import CardFood from "@/components/cardfood";
-import { createDish } from '@/services/request';
+import { createDish} from '@/services/request';
 
 export default function CreatePage(){
     const [preview,setPreview]=useState({
@@ -10,19 +10,17 @@ export default function CreatePage(){
     });
     const [selectedValue, setSelectedValue] = useState('');
     const [response, setResponse] = useState('');
+
+
     async function done(e: FormEvent<HTMLFormElement>){
 
         e.preventDefault();
         const form = e.target as HTMLFormElement;
         const formData = new FormData(form);
-        formData.set('src',preview.srcName);
-        const formJson = Object.fromEntries(formData.entries());
-
-        const formJsonString=JSON.stringify(formJson);
-        
-        const createResponse= await createDish(selectedValue, formJsonString);
+        const createResponse= await createDish(selectedValue, formData);
         setResponse(createResponse);
         setTimeout(()=>setResponse(''),2000);
+
     }
 
     function onPreview (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>){
@@ -77,7 +75,7 @@ export default function CreatePage(){
                         <option value="/mixed drinks">Mixed Drinks</option>
                     </select>
                 </div>
-            <form className="w-full lg:mr-2 lg:w-[49%] h-full mb-2 lg:mb-0" method='post' onSubmit={done}>
+            <form className="w-full lg:mr-2 lg:w-[49%] h-full mb-2 lg:mb-0" method='post' onSubmit={done} encType="multipart/form-data">
                 
                 <div className="flex mb-2">
                     <p>Name: </p>
@@ -94,7 +92,7 @@ export default function CreatePage(){
                 </div>
                 <div className="flex mb-2">
                     <p>Picture:</p>
-                    <input className="shadow shadow-black rounded ml-2 w-full p-2" type="file" accept="image/*" name="src" onChange={handleImageChange} />
+                    <input required className="shadow shadow-black rounded ml-2 w-full p-2" type="file" accept="image/*" name="src" onChange={handleImageChange} />
                 </div>
                 <button  className="bg-gradient-to-r from-cyan-500 to-blue-500 w-full rounded shadow shadow-black h-10 text-white" type="submit">Done</button>
             </form>

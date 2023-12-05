@@ -4,7 +4,7 @@
 import { useRouter } from 'next/navigation'
 import { FormEvent,  useState,  ChangeEvent, useEffect } from 'react';
 import CardFood from "@/components/cardfood";
-import { dishesRequest, updateDish } from '@/services/request';
+import { dishesRequest, imgRequest, updateDish } from '@/services/request';
 interface Dish {
     id: number;
     dish: string;
@@ -28,18 +28,15 @@ export default function UpdatePage(){
         orden:[],
         objetos:{}
     })
-    
-    const router=useRouter();
+
 
     async function done(e: FormEvent<HTMLFormElement>){
 
         e.preventDefault();
         const form = e.target as HTMLFormElement;
         const formData = new FormData(form);
-        formData.set('src',preview.srcName);
-        const formJson = Object.fromEntries(formData.entries());
-        const formJsonString=JSON.stringify(formJson);
-        const createResponse=await updateDish(`${selectedValue}/${selectedOption}`, formJsonString);
+        const json=Object.fromEntries(formData.entries());
+        const createResponse=await updateDish(`${selectedValue}/${selectedOption}`, formData);
         setResponse(createResponse);
         setTimeout(()=>setResponse(''),2000);
         
@@ -55,9 +52,42 @@ export default function UpdatePage(){
         setSelectedValue(event.target.value);
   
     }
-    function option(event:ChangeEvent<HTMLSelectElement>){
+    async function option(event: ChangeEvent<HTMLSelectElement>) {
         setSelectedOption(event.target.value);
-        setPreview(dishes.objetos[event.target.value]);
+       
+        
+        try {
+          const imgBlob= await imgRequest(dishes.objetos[event.target.value].src); // Aquí obtienes el Blob de la función imgRequest
+          
+          const imgUrl = URL.createObjectURL(imgBlob); // Conviertes el Blob en una URL
+    
+          setPreview({
+            ...preview,
+            dish:dishes.objetos[event.target.value].dish,
+            price:dishes.objetos[event.target.value].price,
+            ingredients:dishes.objetos[event.target.value].ingredients,
+            src:imgUrl as string
+          }) // Estableces la URL de la imagen en el estado setImage
+        } catch (error) {
+          console.error('Error fetching the image:', error);
+        }
+      }
+    function handleImageChange(e: React.ChangeEvent<HTMLInputElement>){
+
+        const file = e.target.files && e.target.files[0];
+       
+        if (file) {            
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPreview({
+                    ...preview,
+                    src: reader.result as string, // Asigna el resultado de la lectura como el src de la imagen
+
+                });
+               
+            };
+            reader.readAsDataURL(file); // Lee la imagen como un data URL
+        }
     }
 
     useEffect(() => {
@@ -67,32 +97,14 @@ export default function UpdatePage(){
                     orden: data.map((dish)=>dish.id),
                     objetos:data.reduce((objeto,dish)=>({...objeto,[dish.id]:dish}),{})
                 }
-                setDishes(newDishes);
-                
-            })
+                setDishes(newDishes);})
+            
             .catch(error => {
                 console.error('Error al obtener los datos:', error);
             });
     }, [selectedValue]);
-    function handleImageChange(e: React.ChangeEvent<HTMLInputElement>){
-        e.preventDefault();
-        const file = e.target.files && e.target.files[0];
-       
-        if (file) {
-            const imageName = file.name;
-            
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setPreview({
-                    ...preview,
-                    src: reader.result as string, // Asigna el resultado de la lectura como el src de la imagen
-                    srcName: imageName
-                });
-               
-            };
-            reader.readAsDataURL(file); // Lee la imagen como un data URL
-        }
-    }
+
+    
     return(
         <div className=" rounded shadow shadow-black flex flex-wrap p-2 mb-2 bg-gradient-to-r from-white to-neutral-300">
             <div className='w-full rounded shadow shadow-black p-2 mb-2'>
