@@ -55,7 +55,14 @@ export default function UpdatePage(){
     }
     async function option(event: ChangeEvent<HTMLSelectElement>) {
         setSelectedOption(event.target.value);
-       
+       if (dishes.objetos[event.target.value].src==''){
+        setPreview({
+            ...preview,
+            dish:dishes.objetos[event.target.value].dish,
+            price:dishes.objetos[event.target.value].price,
+            ingredients:dishes.objetos[event.target.value].ingredients,
+            src:''
+       })}else{
         
         try {
           const imgBlob= await imgRequest(dishes.objetos[event.target.value].src); // Aquí obtienes el Blob de la función imgRequest
@@ -71,7 +78,7 @@ export default function UpdatePage(){
           }) // Estableces la URL de la imagen en el estado setImage
         } catch (error) {
           console.error('Error fetching the image:', error);
-        }
+        }}
       }
     function handleImageChange(e: React.ChangeEvent<HTMLInputElement>){
 
@@ -115,7 +122,7 @@ export default function UpdatePage(){
                     <option value="/appetizers">Appetizers</option>
                     <option value="/especialidades">Especialidades</option>
                     <option value="/childs">Child&apos;s Menu</option>
-                    <option value="/mexico best">Mexico&apos;s Best</option>
+                    <option value="/best">Mexico&apos;s Best</option>
                     <option value="/chicken">Chicken Dishes</option>
                     <option value="/grill">From the Grill</option>
                     <option value="/seafood">Seafood</option>
@@ -124,7 +131,7 @@ export default function UpdatePage(){
                     <option value="/vegetarian">Vegetarian Dishes</option>
                     <option value="/combos">Combos</option>
                     <option value="/desserts">Desserts</option>
-                    <option value="/mixed drinks">Mixed Drinks</option>
+                    <option value="/mixeddrinks">Mixed Drinks</option>
                 </select>
             </div>
             <div className='w-full rounded shadow shadow-black p-2 mb-6'>
