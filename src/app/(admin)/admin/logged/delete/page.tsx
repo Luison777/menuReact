@@ -2,7 +2,7 @@
 
 import { FormEvent,  useState,  ChangeEvent, useEffect } from 'react';
 import CardFood from "@/components/cardfood";
-import { deleteDish, dishesRequest } from '@/services/request';
+import { deleteDish, dishesRequest, imgRequest } from '@/services/request';
 import { useRouter } from 'next/navigation';
 
 interface Dish {
@@ -34,7 +34,8 @@ export default function DeletePage(){
 
     async function deleteDishButton(){
         if (selectedValue!==''){
-        const result = await deleteDish(`${selectedValue}/${selectedOption}`);
+        const result = await deleteDish(`${selectedValue}/${selectedOption}/${dishes.objetos[selectedOption].src}`);
+
         setResponse(result);
         setTimeout(()=>setResponse(''),2000);
         dishesRequest(selectedValue)
@@ -58,9 +59,23 @@ export default function DeletePage(){
         setSelectedValue(event.target.value);
   
     }
-    function option(event:ChangeEvent<HTMLSelectElement>){
+    async function option(event:ChangeEvent<HTMLSelectElement>){
         setSelectedOption(event.target.value);
-        setPreview(dishes.objetos[event.target.value]);
+        try {
+            const imgBlob= await imgRequest(dishes.objetos[event.target.value].src); // Aquí obtienes el Blob de la función imgRequest
+            
+            const imgUrl = URL.createObjectURL(imgBlob); // Conviertes el Blob en una URL
+      
+            setPreview({
+              ...preview,
+              dish:dishes.objetos[event.target.value].dish,
+              price:dishes.objetos[event.target.value].price,
+              ingredients:dishes.objetos[event.target.value].ingredients,
+              src:imgUrl as string
+            }) // Estableces la URL de la imagen en el estado setImage
+          } catch (error) {
+            console.error('Error fetching the image:', error);
+          }
     }
     useEffect(() => {
         if (selectedValue !== '') {
@@ -114,7 +129,7 @@ export default function DeletePage(){
             <div className="shadow shadow-black rounded w-full lg:w-1/2 p-2 bg-black mb-2 ">
                 <p className='w-full text-white  text-center'>Preview</p> 
                 <div className='flex justify-center'>
-                    <CardFood src={''} dish={preview.dish} ingredients={preview.ingredients} price={preview.price} ></CardFood>
+                    <CardFood src={preview.src} dish={preview.dish} ingredients={preview.ingredients} price={preview.price} ></CardFood>
                 </div>
             </div>
             <div className='w-full lg:w-[48%] ml-2 text-center text-red-500  '>

@@ -31,7 +31,7 @@ export default function UpdatePage(){
 
 
     async function done(e: FormEvent<HTMLFormElement>){
-
+        if(selectedOption!=='' && selectedValue!==''){
         e.preventDefault();
         const form = e.target as HTMLFormElement;
         const formData = new FormData(form);
@@ -39,7 +39,8 @@ export default function UpdatePage(){
         const createResponse=await updateDish(`${selectedValue}/${selectedOption}`, formData);
         setResponse(createResponse);
         setTimeout(()=>setResponse(''),2000);
-        
+    }else{setResponse('Please select some section and option first.');
+        setTimeout(()=>setResponse(''),2000);}
     }
     function onPreview (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>){
         const { name, value } = event.target;
