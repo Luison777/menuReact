@@ -1,9 +1,9 @@
 "use client"
 
-import { FormEvent,  useState,  ChangeEvent, useEffect } from 'react';
+import { useState,  ChangeEvent, useEffect } from 'react';
 import CardFood from "@/components/cardfood";
 import { deleteDish, dishesRequest, imgRequest } from '@/services/request';
-import { useRouter } from 'next/navigation';
+
 
 interface Dish {
     id: number;
@@ -17,7 +17,15 @@ interface Dish {
     orden: number[];
     objetos: Record<string, Dish>;
   }
-  
+  interface Section {
+    id: number;
+    name: string;
+    value:string;
+  }
+  interface Sections {
+    orden: number[];
+    objetos: Record<string, Section>;
+  }
 export default function DeletePage(){
     const [preview,setPreview]=useState({
         dish:'', ingredients:'', price:'', src:''
@@ -29,8 +37,12 @@ export default function DeletePage(){
       const [dishes,setDishes]=useState<Dishes>({
         orden:[],
         objetos:{}
-    })
-    const router = useRouter();
+    });
+    const [sections,setSections]=useState<Sections>({
+      orden:[],
+      objetos:{}
+  });
+
 
     async function deleteDishButton(){
         if (selectedValue!==''){
@@ -86,38 +98,47 @@ export default function DeletePage(){
                   objetos:data.reduce((objeto,dish)=>({...objeto,[dish.id]:dish}),{})
               }
               setDishes(newDishes);
-             
+              setSelectedOption(data[0].dish);  
+                setPreview({
+                    ...preview,
+                    dish: data[0].dish,
+                    price:data[0].price,
+                    ingredients:data[0].ingredients,
+                    src:''
+               });
           })
           .catch(error => {
               console.error('Error al obtener los datos:', error);
           });}
  }, [selectedValue]);
-
+  useEffect(() => {
+    dishesRequest('/sections')
+        .then((data:Section[]) => {
+            let newSections={
+                orden: data.map((dish)=>dish.id),
+                objetos:data.reduce((objeto,dish)=>({...objeto,[dish.id]:dish}),{})
+            }
+            setSections(newSections);
+            setSelectedValue('/'+data[0].value);})
+        
+        .catch(error => {
+            console.error('Error al obtener los datos:', error);
+        });
+  }, []);
     return(
         <div className=" rounded shadow shadow-black flex flex-wrap p-2  bg-gradient-to-r from-white to-neutral-300">
             <div className='w-full rounded shadow shadow-black p-2 mb-2'>
                 <p className='mr-2 text-center' >Select some section:</p>
-                <select name="section" id="section" className=" rounded shadow shadow-black mb-2 w-full" onChange={section}>
-                    <option value="/favorites">Favorites</option>
-                    <option value="/appetizers">Appetizers</option>
-                    <option value="/especialidades">Especialidades</option>
-                    <option value="/childs">Child&apos;s Menu</option>
-                    <option value="/mexico best">Mexico&apos;s Best</option>
-                    <option value="/chicken">Chicken Dishes</option>
-                    <option value="/grill">From the Grill</option>
-                    <option value="/seafood">Seafood</option>
-                    <option value="/favorites casa">Casa&apos;s Favorite</option>
-                    <option value="/side orders">Side Orders</option>
-                    <option value="/vegetarian">Vegetarian Dishes</option>
-                    <option value="/combos">Combos</option>
-                    <option value="/desserts">Desserts</option>
-                    <option value="/mixed drinks">Mixed Drinks</option>
+                <select name="section"  className=" rounded shadow shadow-black mb-2 w-full" onChange={section}>
+                {sections.orden.map(id=> 
+                        <option key={'section'+id} value={'/'+sections.objetos[id]?.value}>{sections.objetos[id]?.name}</option> 
+                        )}
                 </select>
             </div>
             <div className='w-full rounded shadow shadow-black p-2 mb-2'>
                 <p className='text-center'>Select some Option</p>
                 <div>
-                <select name="section" id="section" className=" rounded shadow shadow-black mb-2 w-full" onChange={option}>
+                <select name="section"  className=" rounded shadow shadow-black mb-2 w-full" onChange={option}>
                     {dishes.orden.map(id=> 
                     <option key={id} value={id}>{dishes.objetos[id].dish}</option> 
                     )}

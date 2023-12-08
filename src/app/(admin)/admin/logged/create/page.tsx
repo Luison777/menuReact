@@ -1,8 +1,19 @@
 "use client"
 
-import { FormEvent,  useState,  ChangeEvent } from 'react';
+import { FormEvent,  useState,  ChangeEvent, useEffect } from 'react';
 import CardFood from "@/components/cardfood";
 import { createDish} from '@/services/request';
+import { dishesRequest} from '@/services/request';
+
+interface Section {
+    id: number;
+    name: string;
+    value:string;
+  }
+  interface Sections {
+    orden: number[];
+    objetos: Record<string, Section>;
+  }
 
 export default function CreatePage(){
     const [preview,setPreview]=useState({
@@ -10,7 +21,10 @@ export default function CreatePage(){
     });
     const [selectedValue, setSelectedValue] = useState('');
     const [response, setResponse] = useState('');
-
+    const [sections,setSections]=useState<Sections>({
+        orden:[],
+        objetos:{}
+    });
 
     async function done(e: FormEvent<HTMLFormElement>){
 
@@ -22,7 +36,6 @@ export default function CreatePage(){
         setTimeout(()=>setResponse(''),2000);
 
     }
-
     function onPreview (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>){
         const { name, value } = event.target;
         setPreview({
@@ -54,25 +67,28 @@ export default function CreatePage(){
             reader.readAsDataURL(file); // Lee la imagen como un data URL
         }
     }
+    useEffect(() => {
+        dishesRequest('/sections')
+            .then((data:Section[]) => {
+                let newSections={
+                    orden: data.map((dish)=>dish.id),
+                    objetos:data.reduce((objeto,dish)=>({...objeto,[dish.id]:dish}),{})
+                }
+                setSections(newSections);
+                setSelectedValue('/'+data[0].value);})
+                
+            .catch(error => {
+                console.error('Error al obtener los datos:', error);
+            });
+    }, []);
     return(
         <div className=" rounded shadow shadow-black flex flex-wrap p-2 mb-2 bg-gradient-to-r from-white to-neutral-300">
             <div className='w-full rounded shadow shadow-black p-2 mb-2'>
                     <p className='mr-2 text-center' >Select some section:</p>
                     <select name="section" id="section" className=" rounded shadow shadow-black mb-2 w-full" onChange={section}>
-                        <option value="/favorites">Favorites</option>
-                        <option value="/appetizers">Appetizers</option>
-                        <option value="/especialidades">Especialidades</option>
-                        <option value="/childs">Child&apos;s Menu</option>
-                        <option value="/mexico best">Mexico&apos;s Best</option>
-                        <option value="/chicken">Chicken Dishes</option>
-                        <option value="/grill">From the Grill</option>
-                        <option value="/seafood">Seafood</option>
-                        <option value="/favorites casa">Casa&apos;s Favorite</option>
-                        <option value="/side orders">Side Orders</option>
-                        <option value="/vegetarian">Vegetarian Dishes</option>
-                        <option value="/combos">Combos</option>
-                        <option value="/desserts">Desserts</option>
-                        <option value="/mixed drinks">Mixed Drinks</option>
+                        {sections.orden.map(id=> 
+                        <option key={id} value={'/'+sections.objetos[id]?.value}>{sections.objetos[id]?.name}</option> 
+                        )}
                     </select>
                 </div>
             <form className="w-full lg:mr-2 lg:w-[49%] h-full mb-2 lg:mb-0" method='post' onSubmit={done} encType="multipart/form-data">
