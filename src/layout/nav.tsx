@@ -15,6 +15,8 @@ interface Sections {
         orden: number[];
         objetos: Record<string, Section>;
       }
+type ObjectFit = 'fill' | 'contain' | 'cover' | 'none' | 'scale-down';
+
         export default function Nav(){
         const pathname = usePathname();
         const router = useRouter();
@@ -24,16 +26,21 @@ interface Sections {
                 orden:[],
                 objetos:{}
             });
+        const imageStyle = {
+            objectFit: 'cover' as ObjectFit,
+        }
             useEffect(() => {
                 dishesRequest('/sections')
                     .then((data:Section[]) => {
+                        const sortedIds = data.map((dish) => dish.id).sort((a, b) => a - b);
+                       
                         let newSections={
-                            orden: data.map((dish)=>dish.id),
-                            objetos:data.reduce((objeto,dish)=>({...objeto,[dish.id]:dish}),{})
+                            orden: sortedIds,
+                            objetos:data.reduce((objeto,section)=>({...objeto,[section.id]:section}),{})
                         }
                         setSections(newSections);
+                       
                    })
-                        
                     .catch(error => {
                         console.error('Error al obtener los datos:', error);
                     });
@@ -42,7 +49,7 @@ interface Sections {
         return(
         <>
        <nav className={`w-full h-16 rounded-t-lg fixed bottom-0 z-50 text-white  pt-[2px] overflow-hidden border-t-2`}>
-       <Image src="/parednegra.webp" alt="pared" fill={true} objectFit="cover" />
+       <Image src="/parednegra.webp" alt="pared" fill={true} style={imageStyle} priority={true}/>
             <ul className="flex items-center  h-[93%] overflow-x-auto p-1 Lobster relative z-50 rounded">
                 {sections.orden.map((id)=>
                 <li key={id} className={`${style} ${pathname=='/'? active:''}`} onClick={()=>router.push('/menu/'+sections.objetos[id].value)}>

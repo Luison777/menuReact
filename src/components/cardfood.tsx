@@ -13,7 +13,7 @@ export default function CardFood(props:CardProps){
            <Image
                  src="/parednegra.webp"
                  alt="pared"
-           
+                 priority={true}
                 fill={true} 
             />
            <p className="text-center text-lg w-full block relative top-0 p-1 Lobster text-white neon">{props.dish}</p>
