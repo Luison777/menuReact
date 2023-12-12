@@ -69,7 +69,7 @@ export async function deleteDish(table: string): Promise<string> {
     }
   }
 
- export async function imgRequest(resource: string): Promise<Blob> {
+export async function imgRequest(resource: string): Promise<Blob> {
     try {
       const response = await fetch(backendUrl + '/images/' + resource);
       if (!response.ok) {
@@ -80,5 +80,24 @@ export async function deleteDish(table: string): Promise<string> {
     } catch (error) {
       console.error('Error fetching the image:', error);
       throw error;
+    }
+  }
+
+export async function createSection(section:FormData,id:string) {
+    try{
+      const response=await fetch(backendUrl+'/sections/'+id,{
+        method:'POST',
+        body:section
+      })
+      if (response.ok) {
+        return 'The dish has been created successfully.'
+      } else {
+        return 'Something wrong has occurred. Please try again.'
+      }
+    }
+    catch(error) {
+      // Manejar errores de red u otras excepciones
+      console.error('Fetch Error:', error);
+      throw error; // Propagar el error para ser manejado en el frontend si es necesario
     }
   }
