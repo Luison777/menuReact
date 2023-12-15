@@ -8,29 +8,41 @@ interface Section {
     id: number;
     name: string;
     value:string;
+    subsections:string;
   }
   interface Sections {
     orden: number[];
     objetos: Record<string, Section>;
   }
+ 
 export default function UpdateSection(){
     const [preview,setPreview]=useState({
         name:''
     });
-    const [selectedValue, setSelectedValue] = useState('');
+    const [sectionChoosed, setSectionChoosed] = useState('');
     const [response, setResponse] = useState('');
-    const [sections,setSections]=useState<Sections>({
+    const [sectionsDB,setSectionsDB]=useState<Sections>({
         orden:[],
         objetos:{}
     });
-
+ 
 
     async function done(e: FormEvent<HTMLFormElement>){
 
         e.preventDefault();
         const form = e.target as HTMLFormElement;
         const formData = new FormData(form);
-        const formJson = Object.fromEntries(formData.entries());
+        const inputValue = formData.get('value') as string;
+        const subsectionsList=sectionsDB.objetos[sectionChoosed].subsections.split(',');
+        subsectionsList[0]=inputValue;
+        const value=subsectionsList.join('/');
+        const subsections=subsectionsList.join(',');
+        const formJson={
+            value:value,
+            subsections:subsections,
+            name:sectionsDB.objetos[sectionChoosed].name.replace(/[^a-zA-Z]/g, '').toLowerCase(),
+            newName:inputValue
+        }
         console.log(formJson);
        // setResponse(createResponse);
        // setTimeout(()=>setResponse(''),2000);
@@ -38,7 +50,7 @@ export default function UpdateSection(){
     }
     function onPreview (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>){
         const { name, value } = event.target;
-        console.log(name,value);
+
         setPreview({
             ...preview,
             [name]: value   
@@ -46,8 +58,8 @@ export default function UpdateSection(){
        
     }
     function section(event:ChangeEvent<HTMLSelectElement>){
-        setSelectedValue(event.target.value);
-  
+        setSectionChoosed(event.target.value);
+        console.log(event.target.value)
     }
  
     useEffect(() => {
@@ -58,9 +70,9 @@ export default function UpdateSection(){
                     orden: data.map((dish)=>dish.id),
                     objetos:data.reduce((objeto,dish)=>({...objeto,[dish.id]:dish}),{})
                 }
-                console.log(newSections);
-                setSections(newSections);
-                setSelectedValue('/'+data[0].value);})
+
+                setSectionsDB(newSections);
+                setSectionChoosed('/'+data[0].value);})
                 
             .catch(error => {
                 console.error('Error al obtener los datos:', error);
@@ -73,15 +85,15 @@ export default function UpdateSection(){
                 <div className='w-full rounded shadow shadow-black p-2 mb-2'>
                     <p className='mr-2 text-center' >Select some section for update name:</p>
                     <select name="section" id="section" className=" rounded shadow shadow-black mb-2 w-full" onChange={section}>
-                        {sections.orden.map(id=> 
-                        <option key={id} value={'/'+sections.objetos[id]?.value}>{sections.objetos[id]?.name}</option> 
+                        {sectionsDB.orden.map(id=> 
+                        <option key={id} value={id}>{sectionsDB.objetos[id]?.name}</option> 
                         )}
                     </select>
                 </div>
                 <form className="w-full h-full mb-2 lg:mb-0" method='post' onSubmit={done} encType="multipart/form-data">
                     <div className="flex mb-2">
                         <p>New name of the section: </p>
-                        <input className=" shadow shadow-black rounded ml-2 w-full" required name="name" type="text" onChange={onPreview}/>
+                        <input className=" shadow shadow-black rounded ml-2 w-full" required name="value" type="text" onChange={onPreview}/>
                     </div>
                     <button  className="bg-gradient-to-r from-cyan-500 to-blue-500 w-full rounded shadow shadow-black h-10 text-white" type="submit">Done</button>
                 </form>

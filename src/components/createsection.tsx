@@ -1,7 +1,7 @@
 "use client"
 
 import { FormEvent,  useState,  ChangeEvent, useEffect } from 'react';
-import { createDish} from '@/services/request';
+
 import { dishesRequest} from '@/services/request';
 
 export default function CreateSection(){
@@ -17,14 +17,18 @@ export default function CreateSection(){
         const form = e.target as HTMLFormElement;
         const formData = new FormData(form);
         const formJson = Object.fromEntries(formData.entries());
+    
+        formJson['value']=formJson.name.replace(/[^a-zA-Z]/g, '').toLowerCase()+'/';
+        formJson['subsections']=formJson.name+',';
         console.log(formJson);
+
        // setResponse(createResponse);
        // setTimeout(()=>setResponse(''),2000);
 
     }
     function onPreview (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>){
         const { name, value } = event.target;
-        console.log(name,value);
+
         setPreview({
             ...preview,
             [name]: value   

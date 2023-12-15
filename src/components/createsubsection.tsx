@@ -1,13 +1,14 @@
 "use client"
 
 import { FormEvent,  useState,  ChangeEvent, useEffect } from 'react';
-import { createDish} from '@/services/request';
+
 import { dishesRequest} from '@/services/request';
 
 interface Section {
     id: number;
     name: string;
     value:string;
+    subsections:string;
   }
   interface Sections {
     orden: number[];
@@ -16,7 +17,7 @@ interface Section {
 
 export default function CreatesubSection(){
     const [preview,setPreview]=useState({
-        name:''
+        value:''
     });
     const [selectedValue, setSelectedValue] = useState('');
     const [response, setResponse] = useState('');
@@ -30,7 +31,12 @@ export default function CreatesubSection(){
         e.preventDefault();
         const form = e.target as HTMLFormElement;
         const formData = new FormData(form);
-        const formJson = Object.fromEntries(formData.entries());
+        const inputValue = formData.get('value') as string;
+        const formJson={
+            value:sections.objetos[selectedValue].value+'/'+inputValue.replace(/[^a-zA-Z]/g, '').toLowerCase(),
+            subsections:sections.objetos[selectedValue].subsections+','+inputValue,
+            subTable:inputValue.replace(/[^a-zA-Z]/g, '').toLowerCase()
+        }
         console.log(formJson);
        // setResponse(createResponse);
        // setTimeout(()=>setResponse(''),2000);
@@ -46,6 +52,7 @@ export default function CreatesubSection(){
     }
     function section(event:ChangeEvent<HTMLSelectElement>){
         setSelectedValue(event.target.value);
+       
   
     }
  
@@ -57,9 +64,9 @@ export default function CreatesubSection(){
                     orden: data.map((dish)=>dish.id),
                     objetos:data.reduce((objeto,dish)=>({...objeto,[dish.id]:dish}),{})
                 }
-                console.log(newSections);
+
                 setSections(newSections);
-                setSelectedValue('/'+data[0].value);})
+               })
                 
             .catch(error => {
                 console.error('Error al obtener los datos:', error);
@@ -73,14 +80,14 @@ export default function CreatesubSection(){
                     <p className='mr-2 text-center' >Select some section for create a new subsection:</p>
                     <select name="section" id="section" className=" rounded shadow shadow-black mb-2 w-full" onChange={section}>
                         {sections.orden.map(id=> 
-                        <option key={id} value={'/'+sections.objetos[id]?.value}>{sections.objetos[id]?.name}</option> 
+                        <option key={id} value={id}>{sections.objetos[id]?.name}</option> 
                         )}
                     </select>
                 </div>
                 <form className="w-full h-full mb-2 lg:mb-0" method='post' onSubmit={done} encType="multipart/form-data">
                     <div className="flex mb-2">
                         <p>Name of the new subsection: </p>
-                        <input className=" shadow shadow-black rounded ml-2 w-full" required name="name" type="text" onChange={onPreview}/>
+                        <input className=" shadow shadow-black rounded ml-2 w-full" required name="value" type="text" onChange={onPreview}/>
                     </div>
                     <button  className="bg-gradient-to-r from-cyan-500 to-blue-500 w-full rounded shadow shadow-black h-10 text-white" type="submit">Done</button>
                 </form>
@@ -88,7 +95,7 @@ export default function CreatesubSection(){
             <div className="shadow shadow-black rounded w-full lg:w-1/2 p-2 text-center bg-black ">
                 <p className='w-full text-white'>Preview</p> 
                 <div className='flex justify-center items-center h-full'>
-                  <p  className="w-full ml-2 text-2xl Mexicanero text-center text-white neonGreen">{preview.name}</p>
+                  <p  className="w-full ml-2 text-2xl Mexicanero text-center text-white neonGreen">{preview.value}</p>
                 </div>
             </div>
             <p className='w-full text-center mt-2 text-green-500'>{response}</p>

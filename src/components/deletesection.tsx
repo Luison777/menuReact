@@ -24,27 +24,11 @@ export default function DeleteSection(){
         objetos:{}
     });
 
-
-    async function done(e: FormEvent<HTMLFormElement>){
-
-        e.preventDefault();
-        const form = e.target as HTMLFormElement;
-        const formData = new FormData(form);
-        const formJson = Object.fromEntries(formData.entries());
-        console.log(formJson);
-       // setResponse(createResponse);
-       // setTimeout(()=>setResponse(''),2000);
-
+    function deleteDishButton(){
+        console.log(selectedValue,sections.objetos[selectedValue].name);
     }
-    function onPreview (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>){
-        const { name, value } = event.target;
-        console.log(name,value);
-        setPreview({
-            ...preview,
-            [name]: value   
-          });
-       
-    }
+ 
+ 
     function section(event:ChangeEvent<HTMLSelectElement>){
         setSelectedValue(event.target.value);
   
@@ -58,7 +42,7 @@ export default function DeleteSection(){
                     orden: data.map((dish)=>dish.id),
                     objetos:data.reduce((objeto,dish)=>({...objeto,[dish.id]:dish}),{})
                 }
-                console.log(newSections);
+
                 setSections(newSections);
                 setSelectedValue('/'+data[0].value);})
                 
@@ -74,14 +58,14 @@ export default function DeleteSection(){
                     <p className='mr-2 text-center' >Select some section for delete:</p>
                     <select name="section" id="section" className=" rounded shadow shadow-black mb-2 w-full" onChange={section}>
                         {sections.orden.map(id=> 
-                        <option key={id} value={'/'+sections.objetos[id]?.value}>{sections.objetos[id]?.name}</option> 
+                        <option key={id} value={id}>{sections.objetos[id]?.name}</option> 
                         )}
                     </select>
                 </div>
                 <div className='w-full text-center text-red-500  '>
                     <p className='h-14 ml-2 text-center text-red-500'>This action will delete the selected option.
                     Please ensure that you have selected the correct option.</p>           
-                    <button  className='bg-white text-black border-8 border-red-500 w-full h-10 rounded shadow shadow-black text-lg  hover:bg-red-500 hover:text-white '>
+                    <button onClick={deleteDishButton} className='bg-white text-black border-8 border-red-500 w-full h-10 rounded shadow shadow-black text-lg  hover:bg-red-500 hover:text-white '>
                         DELETE</button>
                     <p className={`${response!==''? 'text-green/500':'' } mt-10`}>{response}</p>
                 </div>       
