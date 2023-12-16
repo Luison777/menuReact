@@ -1,7 +1,7 @@
 "use client"
 
 import { FormEvent,  useState,  ChangeEvent, useEffect } from 'react';
-import { createDish} from '@/services/request';
+import { createDish, put} from '@/services/request';
 import { dishesRequest} from '@/services/request';
 
 interface Section {
@@ -43,9 +43,10 @@ export default function UpdateSection(){
             name:sectionsDB.objetos[sectionChoosed].name.replace(/[^a-zA-Z]/g, '').toLowerCase(),
             newName:inputValue
         }
-        console.log(formJson);
-       // setResponse(createResponse);
-       // setTimeout(()=>setResponse(''),2000);
+
+        const response=await put(`/sections/section/${sectionChoosed}`,formJson)
+        setResponse(response);
+        setTimeout(()=>setResponse(''),2000);
 
     }
     function onPreview (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>){

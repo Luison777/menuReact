@@ -2,7 +2,7 @@
 
 import { FormEvent,  useState,  ChangeEvent, useEffect } from 'react';
 
-import { dishesRequest} from '@/services/request';
+import { dishesRequest, post} from '@/services/request';
 
 export default function CreateSection(){
     const [preview,setPreview]=useState({
@@ -16,14 +16,17 @@ export default function CreateSection(){
         e.preventDefault();
         const form = e.target as HTMLFormElement;
         const formData = new FormData(form);
-        const formJson = Object.fromEntries(formData.entries());
-    
-        formJson['value']=formJson.name.replace(/[^a-zA-Z]/g, '').toLowerCase()+'/';
-        formJson['subsections']=formJson.name+',';
-        console.log(formJson);
+        const inputValue = formData.get('name') as string;
+        const formJson = {
+            name:inputValue,
+            value:inputValue.replace(/[^a-zA-Z]/g, '').toLowerCase(),
+            subsections:inputValue,
+        }
+  
+        const response=await post('/sections/section',formJson)
 
-       // setResponse(createResponse);
-       // setTimeout(()=>setResponse(''),2000);
+       setResponse(response);
+       setTimeout(()=>setResponse(''),2000);
 
     }
     function onPreview (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>){

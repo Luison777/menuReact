@@ -1,7 +1,7 @@
 "use client"
 
 import { FormEvent,  useState,  ChangeEvent, useEffect } from 'react';
-import { createDish} from '@/services/request';
+import { createDish, deleteSection} from '@/services/request';
 import { dishesRequest} from '@/services/request';
 
 interface Section {
@@ -24,8 +24,11 @@ export default function DeleteSection(){
         objetos:{}
     });
 
-    function deleteDishButton(){
-        console.log(selectedValue,sections.objetos[selectedValue].name);
+    async function deleteDishButton(){
+        const response=await deleteSection(`/sections/section/${selectedValue}/${sections.objetos[selectedValue].name}`)
+        setResponse(response);
+        setTimeout(()=>setResponse(''),2000);
+     
     }
  
  

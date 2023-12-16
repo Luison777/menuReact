@@ -47,7 +47,7 @@ export default function CreateDish(){
                 setSectionChoosed((prev)=>(
                     {...prev,
                     id:data[0].id,
-                    name:data[0].name.replace(/\s/g, '').toLowerCase()
+                    name:data[0].name.replace(/[^a-zA-Z]/g, '').toLowerCase() 
                     }));
             })
                 

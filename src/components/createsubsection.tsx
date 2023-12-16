@@ -2,7 +2,7 @@
 
 import { FormEvent,  useState,  ChangeEvent, useEffect } from 'react';
 
-import { dishesRequest} from '@/services/request';
+import { dishesRequest, post} from '@/services/request';
 
 interface Section {
     id: number;
@@ -37,9 +37,10 @@ export default function CreatesubSection(){
             subsections:sections.objetos[selectedValue].subsections+','+inputValue,
             subTable:inputValue.replace(/[^a-zA-Z]/g, '').toLowerCase()
         }
-        console.log(formJson);
-       // setResponse(createResponse);
-       // setTimeout(()=>setResponse(''),2000);
+       
+        const response=await post(`/sections/subsection/${selectedValue}`,formJson)
+        setResponse(response);
+        setTimeout(()=>setResponse(''),2000);
 
     }
     function onPreview (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>){
