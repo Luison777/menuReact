@@ -1,9 +1,10 @@
 "use client"
 
-import { FormEvent,  useState,  ChangeEvent, useEffect } from 'react';
+import { FormEvent,  useState,  ChangeEvent, useEffect, useContext } from 'react';
 import CardFood from "@/components/cardfood";
 import { createDish} from '@/services/request';
-import { dishesRequest} from '@/services/request';
+import { readData} from '@/services/request';
+import { MemoryContext } from '@/services/memory';
 
 interface Section {
     id: number;
@@ -14,87 +15,50 @@ interface Section {
     orden: number[];
     objetos: Record<string, Section>;
   }
-  interface SectionChoosed{
-    id:number;
-    name:string;
-  }
-  interface SubsectionChoosed{
-    name:string;
-  }
+
 export default function CreateDish(){
+    const contexto = useContext(MemoryContext);
     const [preview,setPreview]=useState({
         dish:'', ingredients:'', price:'', src:'',srcName:''
     });
     const [response, setResponse] = useState('');
-    const [sectionsDB,setSectionsDB]=useState<Sections>({
-        orden:[],
-        objetos:{}
-    });
-    const[subsectionDB,setSubsectionDB]=useState<string[]>([]);
-    const [sectionChoosed, setSectionChoosed] = useState<SectionChoosed>({id:NaN,name:''});
-    const [subsectionChoosed, setSubsectionChoosed] = useState<SubsectionChoosed>({name:''});
+    const [sectionChoosed, setSectionChoosed] = useState<string>('');
+    const [subsectionChoosed, setSubsectionChoosed] = useState<string>('');
   
-    //este codigo obtiete los datos de secciones y subsecciones de la base de datos
+    //este codigo obtiete los datos de secciones y subsecciones de la base de datos y los carga en la memoria
     useEffect(() => {
-        dishesRequest('/sections')
+        readData('/CRUD/sections')
             .then((data:Section[]) => {
-                let newSections={
-                    orden: data.map((dish)=>dish.id),
-                    objetos:data.reduce((objeto,section)=>({...objeto,[section.id]:section}),{})
-                }
-                setSectionsDB(newSections);
-
-                setSectionChoosed((prev)=>(
-                    {...prev,
-                    id:data[0].id,
-                    name:data[0].name.replace(/[^a-zA-Z]/g, '').toLowerCase() 
-                    }));
-            })
-                
+                contexto?.callbackReducer({type:'readSections',data1:data})  
+           })
             .catch(error => {
                 console.error('Error al obtener los datos:', error);
             });
     }, []);
-    //este codigo carga las subsecciones cuando se elige una seccion
-    useEffect(() => {
-        if(sectionsDB.objetos[sectionChoosed.id]){
-        const subsectionsList=sectionsDB.objetos[sectionChoosed.id].subsections.split(',');
-        setSubsectionDB(subsectionsList);
-        }
-    }, [sectionChoosed]);
-
+    
     async function done(e: FormEvent<HTMLFormElement>){
 
         e.preventDefault();
         const form = e.target as HTMLFormElement;
         const formData = new FormData(form);
-        const createResponse= await createDish('/'+subsectionChoosed.name, formData);
-        setResponse(createResponse);
+        const fileObject = formData.get('src')as File;
+        const fileName = fileObject?.name;
+        const json=Object.fromEntries(formData.entries());
+        json.src=fileName;
+        const response= await createDish(subsectionChoosed, json);
+        setResponse(response);
         setTimeout(()=>setResponse(''),2000);
 
     }
-    function onPreview (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>){
-        const { name, value } = event.target;
-        setPreview({
-            ...preview,
-            [name]: value   
-          });
-       
-    }
+    
     function sectionFunc(event:ChangeEvent<HTMLSelectElement>){
-        const newSelectedSection:SectionChoosed={
-            id:parseInt(event.target.value, 10),
-            name:sectionsDB.objetos[event.target.value].name.replace(/[^a-zA-Z]/g, '').toLowerCase() 
-        }
-        setSectionChoosed(newSelectedSection);
+        const value=event.target.value;
+        setSectionChoosed(value);
 
     }
-    function subsectionFunc(event:ChangeEvent<HTMLSelectElement>){
-        const newSelectedValue:SubsectionChoosed={
-            ...subsectionChoosed,
-            name:event.target.value
-        }
-        setSubsectionChoosed(newSelectedValue);
+    async function subsectionFunc(event:ChangeEvent<HTMLSelectElement>){
+        const value=event.target.value;
+        setSubsectionChoosed(value);
 
     }
     function handleImageChange(e: React.ChangeEvent<HTMLInputElement>){
@@ -116,6 +80,14 @@ export default function CreateDish(){
             reader.readAsDataURL(file);
         }
     }
+    function onPreview (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>){
+        const { name, value } = event.target;
+        setPreview({
+            ...preview,
+            [name]: value   
+          });
+       
+    }
  
     return(
         <div className=" rounded shadow shadow-black flex flex-wrap p-2 mb-2 bg-gradient-to-r from-white to-neutral-300">
@@ -123,14 +95,16 @@ export default function CreateDish(){
             <div className='w-full rounded shadow shadow-black p-2 mb-2'>
                 <p className='mr-2 text-center' >Select some section:</p>
                 <select name="section" id="section" className=" rounded shadow shadow-black mb-2 w-full" onChange={sectionFunc}>
-                    {sectionsDB.orden.map(id=> 
-                    <option key={id} value={id}>{sectionsDB.objetos[id]?.name}</option> 
+                    <option  value={''}>{'Selecciona una seccion'}</option> 
+                    {contexto?.state.sections.map(section=> 
+                    <option key={section} value={section}>{section}</option> 
                     )}
                 </select>
                 <p className='mr-2 text-center' >Select some subsection:</p>
                 <select name="subsection" className=" rounded shadow shadow-black mb-2 w-full" onChange={subsectionFunc} >
-                    {subsectionDB.map((sub,indx)=> 
-                    <option key={indx} value={sub.replace(/\s/g, '').toLowerCase()}>{sub}</option> 
+                    <option  value={''}>{sectionChoosed!==''? 'Selecciona una subseccion':'Selecciona una seccion primero'}</option> 
+                    {contexto?.state.subsections[sectionChoosed]?.map((sub,indx)=> 
+                    <option key={indx} value={sub.replace(/[^a-zA-Z_]/g,'').toLowerCase()}>{sub}</option> 
                     )}
                 </select>
             </div>

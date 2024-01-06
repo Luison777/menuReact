@@ -7,9 +7,6 @@ export default function UpdatePage(){
     
     return(
         <>
-            <UpdateDish></UpdateDish>
-            <UpdateSection></UpdateSection>
-            <UpdateSubsection></UpdateSubsection>
         </>
     )
 }

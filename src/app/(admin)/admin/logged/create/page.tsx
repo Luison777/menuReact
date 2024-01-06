@@ -9,8 +9,7 @@ export default function CreatePage(){
     return(
         <> 
             <CreateDish></CreateDish>
-            <CreateSection></CreateSection>
-            <CreateSubsection></CreateSubsection>
+          
         </>
     )
 }

@@ -1,22 +1,73 @@
-const backendUrl = 'http://localhost:3000'; 
+const backendUrl = 'http://localhost:8080'; 
 
-export async function dishesRequest(table:string){
+export async function readData(table:string){
     const response=await fetch(backendUrl+table,{
         method:'GET',
        
     });
-    const dishes=await response.json();
-    return dishes;
-}
+    const data=await response.json();
+    return data;
+  }
+export async function postLogin(url: string, item: any) {
+  try {
+    const response = await fetch(backendUrl + url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(item),
+    });
 
-export async function createDish(table:string,dish:FormData){
+    if (response.ok) {
+      // Si la solicitud es exitosa, extraer el token del cuerpo de la respuesta
+      const responseData = await response.json();
+      const token = responseData.token; // Ajusta la propiedad de la respuesta que contiene el token
+
+      localStorage.setItem('token', token);
+
+      return true;
+    } else {
+      return false
+    }
+  } catch (error) {
+    // Manejar errores de red u otras excepciones
+    console.error('Fetch Error:', error);
+    throw error; // Propagar el error para ser manejado en el frontend si es necesario
+  }
+}
+export async function postVerify(url: string, item: any) {
+  try {
+    const response = await fetch(backendUrl + url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(item),
+    });
+
+    if (response.ok) {
+      return true;
+    } else {
+      return false
+    }
+  } catch (error) {
+    // Manejar errores de red u otras excepciones
+    console.error('Fetch Error:', error);
+    throw error; // Propagar el error para ser manejado en el frontend si es necesario
+  }
+}
+export async function createDish(table:string,dish:any){
   try{
-    const response=await fetch(backendUrl+table,{
+    const response=await fetch(backendUrl+'/CRUD/'+table,{
         method:'POST',
-        body:dish,
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body:JSON.stringify(dish),
     });
     const createDish=await response.json();
     if (response.ok) {
+      console.log(createDish);
       return 'The dish has been created successfully.'
     } else {
       return 'Something wrong has occurred. Please try again.'
@@ -28,6 +79,9 @@ export async function createDish(table:string,dish:FormData){
       throw error; // Propagar el error para ser manejado en el frontend si es necesario
     }
 }
+
+//aun no usadas******************************************************
+
 
 export async function updateDish(table:string,dish:FormData){
   try{

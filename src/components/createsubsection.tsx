@@ -2,7 +2,7 @@
 
 import { FormEvent,  useState,  ChangeEvent, useEffect } from 'react';
 
-import { dishesRequest, post} from '@/services/request';
+import {  post} from '@/services/request';
 
 interface Section {
     id: number;
@@ -57,7 +57,7 @@ export default function CreatesubSection(){
   
     }
  
-    useEffect(() => {
+/*     useEffect(() => {
         dishesRequest('/sections')
             .then((data:Section[]) => {
                 
@@ -72,7 +72,7 @@ export default function CreatesubSection(){
             .catch(error => {
                 console.error('Error al obtener los datos:', error);
             });
-    }, []);
+    }, []); */
     return(
         <div className=" rounded shadow shadow-black flex flex-wrap p-2 mt-6 bg-gradient-to-r from-white to-neutral-300">
             <p className='w-full  text-center my-2 text-cyan-600'>This section is intended solely for creating new subsections in the menu.</p>

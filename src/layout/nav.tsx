@@ -2,44 +2,32 @@
 import '@/app/globals.css'
 import { usePathname } from 'next/navigation'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState} from 'react';
+import { useContext, useEffect} from 'react';
 import Image from 'next/image'
-import { dishesRequest } from '@/services/request';
+import { readData } from '@/services/request';
+import { MemoryContext } from '@/services/memory';
+
 
 interface Section {
         id: number;
         name: string;
-        value:string;
-      }
-interface Sections {
-        orden: number[];
-        objetos: Record<string, Section>;
+        subsections:string;
       }
 type ObjectFit = 'fill' | 'contain' | 'cover' | 'none' | 'scale-down';
 
         export default function Nav(){
+        const contexto = useContext(MemoryContext);
         const pathname = usePathname();
         const router = useRouter();
         const style='text-center h-full flex items-center p-2 ';
         const active='shadow-inner shadow-white rounded';
-        const [sections,setSections]=useState<Sections>({
-                orden:[],
-                objetos:{}
-            });
         const imageStyle = {
             objectFit: 'cover' as ObjectFit,
         }
             useEffect(() => {
-                dishesRequest('/sections')
+                readData('/CRUD/sections')
                     .then((data:Section[]) => {
-                        const sortedIds = data.map((dish) => dish.id).sort((a, b) => a - b);
-                       
-                        let newSections={
-                            orden: sortedIds,
-                            objetos:data.reduce((objeto,section)=>({...objeto,[section.id]:section}),{})
-                        }
-                        setSections(newSections);
-                       
+                        contexto?.callbackReducer({type:'readSections',data1:data})  
                    })
                     .catch(error => {
                         console.error('Error al obtener los datos:', error);
@@ -51,9 +39,9 @@ type ObjectFit = 'fill' | 'contain' | 'cover' | 'none' | 'scale-down';
        <nav className={`w-full h-16 rounded-t-lg fixed bottom-0 z-50 text-white  pt-[2px] overflow-hidden border-t-2`}>
        <Image src="/parednegra.webp" alt="pared" fill={true} style={imageStyle} priority={true}/>
             <ul className="flex items-center  h-[93%] overflow-x-auto p-1 Lobster relative z-50 rounded">
-                {sections.orden.map((id)=>
-                <li key={id} className={`${style} ${pathname=='/'? active:''}`} onClick={()=>router.push('/menu/'+sections.objetos[id].value)}>
-                        <button className='neon whitespace-nowrap'>{sections.objetos[id].name}</button>
+                {contexto?.state.sections.map((section)=>
+                <li key={section} className={`${style} ${pathname=='/'? active:''}`} onClick={()=>router.push('/menu/'+contexto.state.subsections[section].join('/').replace(/[^a-zA-Z_/]/g, '').toLowerCase())}>
+                        <button className='neon whitespace-nowrap'>{contexto?.state.subsections[section]?.[0].replace(/_/g, ' ')}</button>
                 </li>
                 )}
               
