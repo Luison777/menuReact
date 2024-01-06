@@ -3,7 +3,7 @@
 
 import { FormEvent,  useState,  ChangeEvent, useEffect } from 'react';
 import CardFood from "@/components/cardfood";
-import { dishesRequest, imgRequest, updateDish } from '@/services/request';
+import {  imgRequest, readData, updateDish } from '@/services/request';
 interface Dish {
     id: number;
     dish: string;
@@ -53,7 +53,7 @@ export default function UpdateDish(){
    
   
     useEffect(() => {
-        dishesRequest('/sections')
+        readData('/sections')
             .then((data:Section[]) => {
                 let newSections={
                     orden: data.map((dish)=>dish.id),
@@ -81,7 +81,7 @@ export default function UpdateDish(){
     }, [sectionChoosed]);
     useEffect(() => {
         if (subsectionChoosed.name !== '') {
-        dishesRequest('/'+subsectionChoosed.name.replace(/[^a-zA-Z]/g, '').toLowerCase())
+        readData('/'+subsectionChoosed.name.replace(/[^a-zA-Z]/g, '').toLowerCase())
             .then((data:Dish[]) => {
                 let newDishes={
                     orden: data.map((dish)=>dish.id),

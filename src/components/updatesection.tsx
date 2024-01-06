@@ -1,8 +1,8 @@
 "use client"
 
 import { FormEvent,  useState,  ChangeEvent, useEffect } from 'react';
-import { createDish, put} from '@/services/request';
-import { dishesRequest} from '@/services/request';
+import {  put, readData} from '@/services/request';
+
 
 interface Section {
     id: number;
@@ -64,7 +64,7 @@ export default function UpdateSection(){
     }
  
     useEffect(() => {
-        dishesRequest('/sections')
+        readData('/sections')
             .then((data:Section[]) => {
                 
                 let newSections={

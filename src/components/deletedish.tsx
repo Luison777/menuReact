@@ -2,7 +2,7 @@
 
 import { useState,  ChangeEvent, useEffect } from 'react';
 import CardFood from "@/components/cardfood";
-import { deleteDish, dishesRequest, imgRequest } from '@/services/request';
+import { deleteDish,  imgRequest, readData } from '@/services/request';
 
 
 interface Dish {
@@ -52,7 +52,7 @@ export default function DeleteDish(){
     objetos:{}
   });
   useEffect(() => {
-    dishesRequest('/sections')
+    readData('/sections')
         .then((data:Section[]) => {
             let newSections={
                 orden: data.map((dish)=>dish.id),
@@ -79,7 +79,7 @@ export default function DeleteDish(){
   }, [sectionChoosed]);
     useEffect(() => {
       if (sectionChoosed.name !== '') {
-      dishesRequest('/'+subsectionChoosed.name.replace(/[^a-zA-Z]/g, '').toLowerCase())
+      readData('/'+subsectionChoosed.name.replace(/[^a-zA-Z]/g, '').toLowerCase())
         .then((data:Dish[]) => {
             let newDishes={
                 orden: data.map((dish)=>dish.id),
@@ -109,7 +109,7 @@ export default function DeleteDish(){
 
         setResponse(result);
         setTimeout(()=>setResponse(''),2000);
-        dishesRequest('/'+sectionChoosed.name)
+        readData('/'+sectionChoosed.name)
           .then((data: Dish[]) => {
             let newDishes = {
               orden: data.map((dish) => dish.id),

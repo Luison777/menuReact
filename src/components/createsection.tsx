@@ -2,7 +2,7 @@
 
 import { FormEvent,  useState,  ChangeEvent, useEffect } from 'react';
 
-import { dishesRequest, post} from '@/services/request';
+import {  post} from '@/services/request';
 
 export default function CreateSection(){
     const [preview,setPreview]=useState({

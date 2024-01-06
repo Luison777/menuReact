@@ -1,8 +1,8 @@
 "use client"
 
 import { FormEvent,  useState,  ChangeEvent, useEffect } from 'react';
-import { createDish, deleteSection} from '@/services/request';
-import { dishesRequest} from '@/services/request';
+import { createDish, deleteSection, readData} from '@/services/request';
+import { } from '@/services/request';
 
 interface Section {
     id: number;
@@ -38,7 +38,7 @@ export default function DeleteSection(){
     }
  
     useEffect(() => {
-        dishesRequest('/sections')
+        readData('/sections')
             .then((data:Section[]) => {
                 
                 let newSections={

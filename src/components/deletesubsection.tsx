@@ -2,7 +2,7 @@
 
 import { FormEvent,  useState,  ChangeEvent, useEffect } from 'react';
 
-import { deleteSection, deleteSubsection, dishesRequest} from '@/services/request';
+import { deleteSection, deleteSubsection, readData, } from '@/services/request';
 
 interface Section {
     id: number;
@@ -65,7 +65,7 @@ export default function DeleteSubsection(){
 
     }
     useEffect(() => {
-        dishesRequest('/sections')
+        readData('/sections')
             .then((data:Section[]) => {
                 
                 let newSections={
