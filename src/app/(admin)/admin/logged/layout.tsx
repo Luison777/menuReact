@@ -27,7 +27,7 @@ export default function RootLayout({
     };
 
     verifyToken();
-  }, []);
+  });
 
   return authorized ? (  
           <main className="w-full h-full p-2 ">

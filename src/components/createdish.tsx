@@ -34,7 +34,7 @@ export default function CreateDish(){
             .catch(error => {
                 console.error('Error al obtener los datos:', error);
             });
-    }, []);
+    }, [contexto]);
     
     async function done(e: FormEvent<HTMLFormElement>){
 

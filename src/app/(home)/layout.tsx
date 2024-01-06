@@ -1,13 +1,11 @@
 import '@/app/globals.css'
+import Nav from '@/layout/nav'
+import Header from '@/layout/header'
+import Main from '@/layout/main'
+import Footer from '@/layout/footer'
 import MemoryComponent from '@/services/memory'
-import type { Metadata } from 'next'
 
-export const metadata: Metadata = {
-  title: 'Casa Mexicana Menu',
-  description: 'Mexican food Restaurant',
-}
-
-export default function RootLayout({
+export default function Layout({
   children,
 }: {
   children: React.ReactNode
@@ -16,7 +14,12 @@ export default function RootLayout({
     <html lang="en">
       <body className='bg-black'>
         <MemoryComponent>
-        {children}
+          <Header></Header>
+          <Nav></Nav>
+          <Main>
+            {children}
+          </Main>
+          <Footer></Footer>
         </MemoryComponent>
       </body>
     </html>

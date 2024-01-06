@@ -1,11 +1,10 @@
-"use client"
-import { useRouter } from 'next/navigation'
-export default function Home() {
-  const router = useRouter();
+
+export default function MenuPage() {
+
   return (
     <>
-    <p className="text-white">esta es la pagina principal</p>
-    <button className='bg-white' onClick={()=>{router.push('/menu/favorites')}}>Menu</button>
+      <p className="text-2xl text-white my-10 h-full ">Selecciona una categoria y explora nuestros platillos</p>
+    
     </>
   )
 }

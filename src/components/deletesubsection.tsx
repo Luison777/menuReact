@@ -64,30 +64,7 @@ export default function DeleteSubsection(){
         setSubsectionChoosed(number);
 
     }
-    useEffect(() => {
-        readData('/sections')
-            .then((data:Section[]) => {
-                
-                let newSections={
-                    orden: data.map((dish)=>dish.id),
-                    objetos:data.reduce((objeto,dish)=>({...objeto,[dish.id]:dish}),{})
-                }
 
-                setSectionsDB(newSections);
-                setSectionChoosed( data[0].id );
-                
-                })
-                
-            .catch(error => {
-                console.error('Error al obtener los datos:', error);
-            });
-    }, []);
-    useEffect(() => {
-        if(sectionsDB.objetos[sectionChoosed]){
-        const subsectionsList=sectionsDB.objetos[sectionChoosed].subsections.split(',');
-        setSubsectionDB(subsectionsList);
-        }
-    }, [sectionChoosed]);
     return(
         <div className=" rounded shadow shadow-black flex flex-wrap p-2 mt-6 bg-gradient-to-r from-white to-neutral-300">
             <p className='w-full  text-center my-2 text-cyan-600'>This section is intended solely for delete subsections in the menu.</p>

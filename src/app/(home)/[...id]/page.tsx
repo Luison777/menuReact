@@ -36,7 +36,7 @@ export default function MenuPageID({ params }: { params: { id: Array<string>} })
         console.error('Error al procesar las secciones:', error);
       }}
    
-  }, [params.id]);
+  }, [params.id,contexto]);
   
 
   return (

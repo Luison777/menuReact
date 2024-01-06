@@ -51,54 +51,7 @@ export default function DeleteDish(){
     orden:[],
     objetos:{}
   });
-  useEffect(() => {
-    readData('/sections')
-        .then((data:Section[]) => {
-            let newSections={
-                orden: data.map((dish)=>dish.id),
-                objetos:data.reduce((objeto,dish)=>({...objeto,[dish.id]:dish}),{})
-            }
-            setSectionsDB(newSections);
-            setSectionChoosed((prev)=>(
-              {...prev,
-              id:data[0].id,
-              name:data[0].name.replace(/\s/g, '').toLowerCase()
-              }));
-            })
-        
-        .catch(error => {
-            console.error('Error al obtener los datos:', error);
-        });
-  }, []);
-  useEffect(() => {
-    if(sectionChoosed.name!==''){
-    const subsectionsList=sectionsDB.objetos[sectionChoosed.id].subsections.split(',');
-    setSubsectionDB(subsectionsList);
-    setSubsectionChoosed({name:subsectionsList[0].replace(/[^a-zA-Z]/g, '').toLowerCase() });
-    }
-  }, [sectionChoosed]);
-    useEffect(() => {
-      if (sectionChoosed.name !== '') {
-      readData('/'+subsectionChoosed.name.replace(/[^a-zA-Z]/g, '').toLowerCase())
-        .then((data:Dish[]) => {
-            let newDishes={
-                orden: data.map((dish)=>dish.id),
-                objetos:data.reduce((objeto,dish)=>({...objeto,[dish.id]:dish}),{})
-            }
-            setDishes(newDishes);
-        
-              setPreview({
-                  ...preview,
-                  dish: data[0].dish,
-                  price:data[0].price,
-                  ingredients:data[0].ingredients,
-                  src:''
-             });
-        })
-        .catch(error => {
-            console.error('Error al obtener los datos:', error);
-        });}
-    }, [subsectionChoosed]);
+
 
 
 

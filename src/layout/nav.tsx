@@ -25,14 +25,16 @@ type ObjectFit = 'fill' | 'contain' | 'cover' | 'none' | 'scale-down';
             objectFit: 'cover' as ObjectFit,
         }
             useEffect(() => {
+                if(contexto?.state.sections.length==0){
                 readData('/CRUD/sections')
                     .then((data:Section[]) => {
                         contexto?.callbackReducer({type:'readSections',data1:data})  
                    })
                     .catch(error => {
                         console.error('Error al obtener los datos:', error);
-                    });
-            }, []);
+                    });}
+                
+            }, [contexto]);
 
         return(
         <>
@@ -40,7 +42,7 @@ type ObjectFit = 'fill' | 'contain' | 'cover' | 'none' | 'scale-down';
        <Image src="/parednegra.webp" alt="pared" fill={true} style={imageStyle} priority={true}/>
             <ul className="flex items-center  h-[93%] overflow-x-auto p-1 Lobster relative z-50 rounded">
                 {contexto?.state.sections.map((section)=>
-                <li key={section} className={`${style} ${pathname=='/'? active:''}`} onClick={()=>router.push('/menu/'+contexto.state.subsections[section].join('/').replace(/[^a-zA-Z_/]/g, '').toLowerCase())}>
+                <li key={section} className={`${style} ${pathname==section? active:''}`} onClick={()=>router.push('/'+contexto.state.subsections[section].join('/').replace(/[^a-zA-Z_/]/g, '').toLowerCase())}>
                         <button className='neon whitespace-nowrap'>{contexto?.state.subsections[section]?.[0].replace(/_/g, ' ')}</button>
                 </li>
                 )}
