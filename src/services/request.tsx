@@ -1,5 +1,5 @@
 /* const backendUrl = 'http://localhost:8080';  */
-const backendUrl = 'http://apicrudmenu2.us-east-2.elasticbeanstalk.com'; 
+const backendUrl = 'https://server.luisangelfrausto.com'; 
 export async function readData(table:string){
     const response=await fetch(backendUrl+table,{
         method:'GET',
