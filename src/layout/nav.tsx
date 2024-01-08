@@ -43,7 +43,7 @@ type ObjectFit = 'fill' | 'contain' | 'cover' | 'none' | 'scale-down';
             <ul className="flex justify-around	  h-[93%] overflow-x-auto p-1 Lobster relative z-50 rounded">
                 {contexto?.state.sections.map((section)=>
                 <li key={section} className={`${style} ${pathname==section? active:''}`} onClick={()=>router.push('/'+contexto.state.subsections[section].join('/').replace(/[^a-zA-Z_/]/g, '').toLowerCase())}>
-                        <button className='neon whitespace-nowrap'>{contexto?.state.subsections[section]?.[0].replace(/_/g, ' ')}</button>
+                        <button className='neon whitespace-nowrap  lg:text-xl'>{contexto?.state.subsections[section]?.[0].replace(/_/g, ' ')}</button>
                 </li>
                 )}
               

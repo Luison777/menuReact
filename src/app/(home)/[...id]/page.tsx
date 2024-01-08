@@ -47,7 +47,7 @@ export default function MenuPageID({ params }: { params: { id: Array<string>} })
           {contexto?.state.subsections[params.id[0]]?.[index].replace(/_/g, ' ')}
         </p>
         {contexto?.state.dishes[section]?.map((dish:Dish) => (
-          <CardFood key={dish.id} dish={dish.dish} ingredients={dish.ingredients} price={dish.price} src={''}></CardFood>
+          <CardFood key={dish.id} dish={dish.dish} ingredients={dish.ingredients} price={dish.price} src={`/images/${dish.src}`}></CardFood>
         ))}
       </div>
     ))}
