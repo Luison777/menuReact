@@ -1,5 +1,5 @@
-const backendUrl = 'http://localhost:8080'; 
-/* const backendUrl = 'https://server.luisangelfrausto.com';  */
+/* const backendUrl = 'http://localhost:8080';  */
+const backendUrl = 'https://server.luisangelfrausto.com'; 
 export async function readData(table:string){
     const response=await fetch(backendUrl+table,{
         method:'GET',
