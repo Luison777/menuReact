@@ -3,7 +3,7 @@ import CardFood from "@/components/cardfood";
 import  { MemoryContext } from "@/services/memory";
 import { readData } from "@/services/request";
 
-import { useContext, useEffect, useState} from 'react';
+import { useContext, useEffect} from 'react';
 
 
   interface Dish {

@@ -7,7 +7,6 @@ import Image from 'next/image'
 import { readData } from '@/services/request';
 import { MemoryContext } from '@/services/memory';
 
-
 interface Section {
         id: number;
         name: string;
@@ -38,15 +37,14 @@ type ObjectFit = 'fill' | 'contain' | 'cover' | 'none' | 'scale-down';
 
         return(
         <>
-       <nav className={`w-full h-16 rounded-t-lg fixed bottom-0 z-50 text-white  pt-[2px] overflow-hidden border-t-2`}>
+       <nav className={`w-full h-16 rounded-t-lg fixed bottom-0 z-50 text-white  pt-[2px] overflow-hidden border-t-2 `}>
        <Image src="/parednegra.webp" alt="pared" fill={true} style={imageStyle} priority={true}/>
-            <ul className="flex justify-around	  h-[93%] overflow-x-auto p-1 Lobster relative z-50 rounded">
+            <ul className="flex h-[93%] overflow-x-auto Lobster relative z-50 rounded">
                 {contexto?.state.sections.map((section)=>
                 <li key={section} className={`${style} ${pathname==section? active:''}`} onClick={()=>router.push('/'+contexto.state.subsections[section].join('/').replace(/[^a-zA-Z_/]/g, '').toLowerCase())}>
-                        <button className='neon whitespace-nowrap  lg:text-xl'>{contexto?.state.subsections[section]?.[0].replace(/_/g, ' ')}</button>
+                    <button className='neon whitespace-nowrap  lg:text-xl'>{contexto?.state.subsections[section]?.[0].replace(/_/g, ' ')}</button>
                 </li>
                 )}
-              
             </ul>
         </nav>
  
