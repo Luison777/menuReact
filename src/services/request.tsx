@@ -67,8 +67,8 @@ export async function createDish(table:string,dish:any){
     });
     const createDish=await response.json();
     if (response.ok) {
-      console.log(createDish);
-      return 'The dish has been created successfully.'
+
+      return createDish;
     } else {
       return 'Something wrong has occurred. Please try again.'
     }
@@ -79,21 +79,117 @@ export async function createDish(table:string,dish:any){
       throw error; // Propagar el error para ser manejado en el frontend si es necesario
     }
 }
-
-//aun no usadas******************************************************
-
-
-export async function updateDish(table:string,dish:FormData){
+export async function createSection(name:string,item:any) {
   try{
-    const response=await fetch(backendUrl+table,{
+    const response=await fetch(backendUrl+'/Sections/'+name,{
+        method:'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body:JSON.stringify(item),
+    });
+    const createDish=await response.json();
+    if (response.ok) {
+      return createDish
+    }
+    }
+    catch(error) {
+      // Manejar errores de red u otras excepciones
+      console.error('Fetch Error:', error);
+      return error; // Propagar el error para ser manejado en el frontend si es necesario
+    }
+
+}
+export async function createSubSection(item:any,table:string, id:string) {
+  try{
+    const response=await fetch(backendUrl+'/Sections/'+table+'/'+id,{
+      method:'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body:JSON.stringify(item)
+    })
+    const subsection=await response.json();
+    if (response.ok) {
+      return subsection
+    } 
+  }
+  catch(error) {
+    // Manejar errores de red u otras excepciones
+    console.error('Fetch Error:', error);
+    return error; // Propagar el error para ser manejado en el frontend si es necesario
+  }
+}
+export async function updateDish(table:string,item:any,id:string){
+  try{
+    const response=await fetch(backendUrl+'/CRUD/'+table+'/'+id,{
         method:'PUT',
-        body:dish,
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body:JSON.stringify(item),
        
     });
     const createDish=await response.json();
 
     if (response.ok) {
-      return 'The dish has been updated successfully.'
+      return createDish
+    } 
+    }
+    catch(error) {
+      // Manejar errores de red u otras excepciones
+      console.error('Fetch Error:', error);
+      return error; // Propagar el error para ser manejado en el frontend si es necesario
+    }
+}
+export async function updateSectionFunc(oldName:string,newName:string,id:string,item:any) {
+  try{
+    const response=await fetch(backendUrl+'/CRUD/'+oldName+'/'+newName+'/'+id,{
+        method:'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body:JSON.stringify(item),
+    });
+    const createDish=await response.json();
+    if (response.ok) {
+      return createDish
+    } 
+    }
+    catch(error) {
+      // Manejar errores de red u otras excepciones
+      console.error('Fetch Error:', error);
+      return error; // Propagar el error para ser manejado en el frontend si es necesario
+    }
+
+}
+export async function deleteDish(table: string,id:string){
+  try {
+    const response = await fetch(backendUrl +'/CRUD/'+ table+'/'+id, {
+      method: 'DELETE'
+    });
+
+    if (response.ok) {
+      return 'The dish has been deleted successfully.'
+    } 
+  } catch (error) {
+    // Manejar errores de red u otras excepciones
+    console.error('Fetch Error:', error);
+    return error; // Propagar el error para ser manejado en el frontend si es necesario
+  }
+}
+export async function deleteSubsection(tableDelete:string,id:string,item:any) {
+  try{
+    const response=await fetch(backendUrl+'/Sections/'+tableDelete+'/'+id,{
+        method:'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body:JSON.stringify(item),
+    });
+    const createDish=await response.json();
+    if (response.ok) {
+      return 'The section has been created successfully.'
     } else {
       return 'Something wrong has occurred. Please try again.'
     }
@@ -103,25 +199,31 @@ export async function updateDish(table:string,dish:FormData){
       console.error('Fetch Error:', error);
       throw error; // Propagar el error para ser manejado en el frontend si es necesario
     }
-}
 
-export async function deleteDish(table: string): Promise<string> {
-    try {
-      const response = await fetch(backendUrl + table, {
-        method: 'DELETE'
-      });
+}
+export async function deleteSection(table:string,id:string) {
+  try{
+    const response=await fetch(backendUrl+'/Sections/section/'+table+'/'+id,{ 
+        method:'DELETE',
   
-      if (response.ok) {
-        return 'The dish has been deleted successfully.'
-      } else {
-        return 'Something wrong has occurred. Please try again.'
-      }
-    } catch (error) {
+    });
+    const createDish=await response.json();
+    if (response.ok) {
+      return 'The section has been created successfully.'
+    } else {
+      return 'Something wrong has occurred. Please try again.'
+    }
+    }
+    catch(error) {
       // Manejar errores de red u otras excepciones
       console.error('Fetch Error:', error);
       throw error; // Propagar el error para ser manejado en el frontend si es necesario
     }
-  }
+
+}
+
+//aun no usadas******************************************************
+
 
 export async function imgRequest(resource: string): Promise<Blob> {
     try {
@@ -137,115 +239,8 @@ export async function imgRequest(resource: string): Promise<Blob> {
     }
   }
 
-export async function createSection(section:FormData,id:string) {
-    try{
-      const response=await fetch(backendUrl+'/sections/'+id,{
-        method:'POST',
-        body:section
-      })
-      if (response.ok) {
-        return 'The dish has been created successfully.'
-      } else {
-        return 'Something wrong has occurred. Please try again.'
-      }
-    }
-    catch(error) {
-      // Manejar errores de red u otras excepciones
-      console.error('Fetch Error:', error);
-      throw error; // Propagar el error para ser manejado en el frontend si es necesario
-    }
-  }
-export async function post(url:string,item:any) {
-  try{
-    const response=await fetch(backendUrl+url,{
-        method:'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body:JSON.stringify(item),
-    });
-    const createDish=await response.json();
-    if (response.ok) {
-      return 'The section has been created successfully.'
-    } else {
-      return 'Something wrong has occurred. Please try again.'
-    }
-    }
-    catch(error) {
-      // Manejar errores de red u otras excepciones
-      console.error('Fetch Error:', error);
-      throw error; // Propagar el error para ser manejado en el frontend si es necesario
-    }
 
-}
 
-export async function put(url:string,item:any) {
-  try{
-    const response=await fetch(backendUrl+url,{
-        method:'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body:JSON.stringify(item),
-    });
-    const createDish=await response.json();
-    if (response.ok) {
-      return 'The section has been created successfully.'
-    } else {
-      return 'Something wrong has occurred. Please try again.'
-    }
-    }
-    catch(error) {
-      // Manejar errores de red u otras excepciones
-      console.error('Fetch Error:', error);
-      throw error; // Propagar el error para ser manejado en el frontend si es necesario
-    }
 
-}
 
-export async function deleteSection(url:string) {
-  try{
-    const response=await fetch(backendUrl+url,{
-        method:'DELETE',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-    });
-    const createDish=await response.json();
-    if (response.ok) {
-      return 'The section has been created successfully.'
-    } else {
-      return 'Something wrong has occurred. Please try again.'
-    }
-    }
-    catch(error) {
-      // Manejar errores de red u otras excepciones
-      console.error('Fetch Error:', error);
-      throw error; // Propagar el error para ser manejado en el frontend si es necesario
-    }
 
-}
-
-export async function deleteSubsection(url:string,item:any) {
-  try{
-    const response=await fetch(backendUrl+url,{
-        method:'DELETE',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body:JSON.stringify(item),
-    });
-    const createDish=await response.json();
-    if (response.ok) {
-      return 'The section has been created successfully.'
-    } else {
-      return 'Something wrong has occurred. Please try again.'
-    }
-    }
-    catch(error) {
-      // Manejar errores de red u otras excepciones
-      console.error('Fetch Error:', error);
-      throw error; // Propagar el error para ser manejado en el frontend si es necesario
-    }
-
-}

@@ -36,7 +36,7 @@ export default function MenuPageID({ params }: { params: { id: Array<string>} })
         console.error('Error al procesar las secciones:', error);
       }}
    
-  }, [params.id,contexto]);
+  }, [params.id]);
   
 
   return (
@@ -44,10 +44,10 @@ export default function MenuPageID({ params }: { params: { id: Array<string>} })
     {params.id.map((section,index) => (
       <div className="flex flex-wrap justify-center " key={index}>
         <p  className="w-full ml-2 text-2xl Mexicanero text-center text-white neonGreen">
-          {contexto?.state.subsections[params.id[0]]?.[index].replace(/_/g, ' ')}
+          {section.replace(/[0-9_%]/g,' ')}
         </p>
         {contexto?.state.dishes[section]?.map((dish:Dish) => (
-          <CardFood key={dish.id} dish={dish.dish} ingredients={dish.ingredients} price={dish.price} src={`/images/${dish.src}`}></CardFood>
+          <CardFood key={dish.id} dish={dish.dish} ingredients={dish.ingredients} price={dish.price} src={``}></CardFood>
         ))}
       </div>
     ))}

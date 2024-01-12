@@ -11,10 +11,7 @@ interface Section {
     name: string;
     subsections:string;
   }
-  interface Sections {
-    orden: number[];
-    objetos: Record<string, Section>;
-  }
+
 
 export default function CreateDish(){
     const contexto = useContext(MemoryContext);
@@ -27,13 +24,16 @@ export default function CreateDish(){
   
     //este codigo obtiete los datos de secciones y subsecciones de la base de datos y los carga en la memoria
     useEffect(() => {
+        const dataFetch=()=>{
+        if(contexto?.state.order && contexto.state.order.length <= 0){
         readData('/CRUD/sections')
             .then((data:Section[]) => {
                 contexto?.callbackReducer({type:'readSections',data1:data})  
            })
             .catch(error => {
                 console.error('Error al obtener los datos:', error);
-            });
+            });}}
+        dataFetch();
     }, [contexto]);
     
     async function done(e: FormEvent<HTMLFormElement>){
@@ -45,9 +45,12 @@ export default function CreateDish(){
         const fileName = fileObject?.name;
         const json=Object.fromEntries(formData.entries());
         json.src=fileName;
-        const response= await createDish(subsectionChoosed, json);
-        setResponse(response);
-        setTimeout(()=>setResponse(''),2000);
+        const result= await createDish(subsectionChoosed, json);
+        if(result.id){
+            setResponse('create succesfully');
+            setTimeout(()=>setResponse(''),2000);
+        }else{setResponse('something wrog has ocurred');
+            setTimeout(()=>setResponse(''),2000);}
 
     }
     
@@ -96,8 +99,8 @@ export default function CreateDish(){
                 <p className='mr-2 text-center' >Select some section:</p>
                 <select name="section" id="section" className=" rounded shadow shadow-black mb-2 w-full" onChange={sectionFunc}>
                     <option  value={''}>{'Selecciona una seccion'}</option> 
-                    {contexto?.state.sections.map(section=> 
-                    <option key={section} value={section}>{section}</option> 
+                    {contexto?.state.order.map((section,id)=> 
+                    <option key={`section${id}`} value={section}>{contexto.state.subsections[section][0]}</option> 
                     )}
                 </select>
                 <p className='mr-2 text-center' >Select some subsection:</p>

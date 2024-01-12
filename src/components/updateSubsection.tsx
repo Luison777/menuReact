@@ -1,55 +1,44 @@
 "use client"
 
-import { FormEvent,  useState,  ChangeEvent, useEffect } from 'react';
-import {  put, readData} from '@/services/request';
+import { FormEvent,  useState,  ChangeEvent, useEffect, useContext } from 'react';
+import { updateSectionFunc } from '@/services/request';
+import { MemoryContext } from '@/services/memory';
 
 
 interface Section {
-    id: number;
-    name: string;
-    value:string;
+
     subsections:string;
   }
-  interface Sections {
-    orden: number[];
-    objetos: Record<string, Section>;
-  }
-  interface SubsectionChoosed{
-    name:string;
-  }
+
+
 export default function UpdateSubsection(){
+    const contexto = useContext(MemoryContext);
     const [preview,setPreview]=useState({
         value:''
     });
-    const [sectionChoosed, setSectionChoosed] = useState('');
+    
     const [response, setResponse] = useState('');
-    const [sectionsDB,setSectionsDB]=useState<Sections>({
-        orden:[],
-        objetos:{}
-    });
-    const[subsectionDB,setSubsectionDB]=useState<string[]>([]);
-    const [subsectionChoosed, setSubsectionChoosed] = useState({name:''});
+   
+    const [sectionChoosed, setSectionChoosed] = useState('');
+    const [subsectionChoosed, setSubsectionChoosed] = useState('');
 
     async function done(e: FormEvent<HTMLFormElement>){
 
         e.preventDefault();
         const form = e.target as HTMLFormElement;
         const formData = new FormData(form);
-        const inputValue = formData.get('value') as string;
-        const subsectionsList=sectionsDB.objetos[sectionChoosed].subsections.split(',');
-        const index=subsectionsList.indexOf(subsectionChoosed.name);
-        subsectionsList[index]=inputValue;
-        const value=subsectionsList.join('/');
-        const subsections=subsectionsList.join(',');
-        const formJson={
-            value:value,
-            subsections:subsections,
-            name:subsectionChoosed.name.replace(/[^a-zA-Z]/g, '').toLowerCase(),
-            newName:inputValue
-        }
-        const response=await put(`/sections/subsection/${sectionChoosed}`,formJson)
-        setResponse(response);
-        setTimeout(()=>setResponse(''),2000);
+        const firstValue = formData.values().next().value.replace(/\s/g, '_');
+        const subsectionsList=contexto?.state.subsections[sectionChoosed] as string[];
+        const copysubsectionsList=[...subsectionsList];
+        const subsectionIndex=copysubsectionsList.indexOf(subsectionChoosed);
+        copysubsectionsList[subsectionIndex]=firstValue;
+        const newData:Section={subsections:copysubsectionsList.join(',')};
+        const result=await updateSectionFunc(subsectionChoosed,firstValue,sectionChoosed,newData)
+        if(result.id){
+            setResponse('create succesfully');
+            setTimeout(()=>setResponse(''),2000);
+        }else{setResponse('something wrog has ocurred');
+            setTimeout(()=>setResponse(''),2000);}
 
     }
     function onPreview (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>){
@@ -65,11 +54,8 @@ export default function UpdateSubsection(){
   
     }
     function subsectionFunc(event:ChangeEvent<HTMLSelectElement>){
-        const newSelectedValue:SubsectionChoosed={
-            ...subsectionChoosed,
-            name:event.target.value
-        }
-        setSubsectionChoosed(newSelectedValue);
+        const value=event.target.value;
+        setSubsectionChoosed(value);
 
     }
  
@@ -80,16 +66,18 @@ export default function UpdateSubsection(){
                 <div className='w-full rounded shadow shadow-black p-2 mb-2'>
                     <p className='mr-2 text-center' >Select some section for update name of subsection:</p>
                     <select name="section" id="section" className=" rounded shadow shadow-black mb-2 w-full" onChange={section}>
-                        {sectionsDB.orden.map(id=> 
-                        <option key={id} value={id}>{sectionsDB.objetos[id].name}</option> 
+                        <option  value={''}>{'Selecciona una seccion'}</option> 
+                        {contexto?.state.order.map((section,id)=> 
+                        <option key={`section${id}`} value={section}>{contexto.state.subsections[section][0]}</option> 
                         )}
                     </select>
                 </div>
                 <div className='w-full rounded shadow shadow-black p-2 mb-2'>
                     <p className='mr-2 text-center' >Select some subsection for update name:</p>
                     <select name="section" id="section" className=" rounded shadow shadow-black mb-2 w-full" onChange={subsectionFunc}>
-                        {subsectionDB.map((sub,indx)=> 
-                        <option key={indx} value={sub}>{sub}</option> 
+                        <option  value={''}>{sectionChoosed!==''? 'Selecciona una subseccion':'Selecciona una seccion primero'}</option> 
+                        {contexto?.state.subsections[sectionChoosed]?.map((sub,indx)=> 
+                        <option key={indx} value={sub.replace(/[^a-zA-Z_]/g,'').toLowerCase()}>{sub}</option> 
                         )}
                     </select>
                 </div>

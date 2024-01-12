@@ -1,8 +1,9 @@
 "use client"
 
-import { FormEvent,  useState,  ChangeEvent, useEffect } from 'react';
+import { FormEvent,  useState,  ChangeEvent, useEffect, useContext } from 'react';
 
-import {  post} from '@/services/request';
+import { createSubSection } from '@/services/request';
+import { MemoryContext } from '@/services/memory';
 
 interface Section {
     id: number;
@@ -16,15 +17,13 @@ interface Section {
   }
 
 export default function CreatesubSection(){
+    const contexto = useContext(MemoryContext);
     const [preview,setPreview]=useState({
         value:''
     });
     const [selectedValue, setSelectedValue] = useState('');
     const [response, setResponse] = useState('');
-    const [sections,setSections]=useState<Sections>({
-        orden:[],
-        objetos:{}
-    });
+   
 
     async function done(e: FormEvent<HTMLFormElement>){
 
@@ -33,14 +32,16 @@ export default function CreatesubSection(){
         const formData = new FormData(form);
         const inputValue = formData.get('value') as string;
         const formJson={
-            value:sections.objetos[selectedValue].value+'/'+inputValue.replace(/[^a-zA-Z]/g, '').toLowerCase(),
-            subsections:sections.objetos[selectedValue].subsections+','+inputValue,
-            subTable:inputValue.replace(/[^a-zA-Z]/g, '').toLowerCase()
+            subsections:contexto?.state.subsections[selectedValue].join(',')+','+inputValue
         }
-       
-        const response=await post(`/sections/subsection/${selectedValue}`,formJson)
-        setResponse(response);
-        setTimeout(()=>setResponse(''),2000);
+        const result=await createSubSection(formJson,inputValue,selectedValue);
+        console.log(result  );
+        contexto?.callbackReducer({type:'createSubsection',dataSection:result});
+        if(result.id){
+            setResponse('create succesfully');
+            setTimeout(()=>setResponse(''),2000);
+        }else{setResponse('something wrog has ocurred');
+            setTimeout(()=>setResponse(''),2000);}
 
     }
     function onPreview (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>){
@@ -56,23 +57,7 @@ export default function CreatesubSection(){
        
   
     }
- 
-/*     useEffect(() => {
-        dishesRequest('/sections')
-            .then((data:Section[]) => {
-                
-                let newSections={
-                    orden: data.map((dish)=>dish.id),
-                    objetos:data.reduce((objeto,dish)=>({...objeto,[dish.id]:dish}),{})
-                }
 
-                setSections(newSections);
-               })
-                
-            .catch(error => {
-                console.error('Error al obtener los datos:', error);
-            });
-    }, []); */
     return(
         <div className=" rounded shadow shadow-black flex flex-wrap p-2 mt-6 bg-gradient-to-r from-white to-neutral-300">
             <p className='w-full  text-center my-2 text-cyan-600'>This section is intended solely for creating new subsections in the menu.</p>
@@ -80,8 +65,9 @@ export default function CreatesubSection(){
                 <div className='w-full rounded shadow shadow-black p-2 mb-2'>
                     <p className='mr-2 text-center' >Select some section for create a new subsection:</p>
                     <select name="section" id="section" className=" rounded shadow shadow-black mb-2 w-full" onChange={section}>
-                        {sections.orden.map(id=> 
-                        <option key={id} value={id}>{sections.objetos[id]?.name}</option> 
+                        <option  value={''}>{'Selecciona una seccion'}</option>
+                        {contexto?.state.order.map((section,id)=> 
+                        <option key={id} value={section}>{contexto.state.subsections[section][0]}</option> 
                         )}
                     </select>
                 </div>

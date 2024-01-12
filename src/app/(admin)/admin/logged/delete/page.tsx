@@ -9,7 +9,9 @@ export default function DeletePage(){
     
     return(
         <>
-         
+         <DeleteDish></DeleteDish>
+         <DeleteSection></DeleteSection>
+         <DeleteSubsection></DeleteSubsection>
         </>
     )
 }

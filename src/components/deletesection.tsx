@@ -1,58 +1,33 @@
 "use client"
 
-import { FormEvent,  useState,  ChangeEvent, useEffect } from 'react';
-import { createDish, deleteSection, readData} from '@/services/request';
-import { } from '@/services/request';
+import { useState, ChangeEvent, useContext } from 'react';
+import {  deleteSection} from '@/services/request';
+import { MemoryContext } from '@/services/memory';
 
-interface Section {
-    id: number;
-    name: string;
-    value:string;
-  }
-  interface Sections {
-    orden: number[];
-    objetos: Record<string, Section>;
-  }
 export default function DeleteSection(){
+    const contexto = useContext(MemoryContext);
     const [preview,setPreview]=useState({
         name:''
     });
-    const [selectedValue, setSelectedValue] = useState('');
+    const [sectionChoosed, setSectionChoosed] = useState('');
     const [response, setResponse] = useState('');
-    const [sections,setSections]=useState<Sections>({
-        orden:[],
-        objetos:{}
-    });
-
+  
     async function deleteDishButton(){
-        const response=await deleteSection(`/sections/section/${selectedValue}/${sections.objetos[selectedValue].name}`)
+        const tableName=contexto?.state.subsections[sectionChoosed][0] as string;
+        console.log(sectionChoosed,tableName);
+        const response=await deleteSection(tableName,sectionChoosed)
         setResponse(response);
         setTimeout(()=>setResponse(''),2000);
      
     }
  
- 
     function section(event:ChangeEvent<HTMLSelectElement>){
-        setSelectedValue(event.target.value);
+        const value=event.target.value;
+        setSectionChoosed(value);
+
   
     }
- 
-    useEffect(() => {
-        readData('/sections')
-            .then((data:Section[]) => {
-                
-                let newSections={
-                    orden: data.map((dish)=>dish.id),
-                    objetos:data.reduce((objeto,dish)=>({...objeto,[dish.id]:dish}),{})
-                }
 
-                setSections(newSections);
-                setSelectedValue('/'+data[0].value);})
-                
-            .catch(error => {
-                console.error('Error al obtener los datos:', error);
-            });
-    }, []);
     return(
         <div className=" rounded shadow shadow-black flex flex-wrap p-2 mt-6 bg-gradient-to-r from-white to-neutral-300">
             <p className='w-full  text-center my-2 text-cyan-600'>This section is intended solely for delete sections in the menu.</p>
@@ -60,8 +35,9 @@ export default function DeleteSection(){
                 <div className='w-full rounded shadow shadow-black p-2 mb-2'>
                     <p className='mr-2 text-center' >Select some section for delete:</p>
                     <select name="section" id="section" className=" rounded shadow shadow-black mb-2 w-full" onChange={section}>
-                        {sections.orden.map(id=> 
-                        <option key={id} value={id}>{sections.objetos[id]?.name}</option> 
+                        <option  value={''}>{'Selecciona una seccion'}</option> 
+                        {contexto?.state.order.map((section,id)=> 
+                        <option key={`section${id}`} value={section}>{contexto.state.subsections[section][0]}</option> 
                         )}
                     </select>
                 </div>

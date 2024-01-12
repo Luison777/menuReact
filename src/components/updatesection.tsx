@@ -1,52 +1,41 @@
 "use client"
 
-import { FormEvent,  useState,  ChangeEvent, useEffect } from 'react';
-import {  put, readData} from '@/services/request';
-
+import { FormEvent,  useState,  ChangeEvent, useEffect, useContext } from 'react';
+import {  updateSectionFunc} from '@/services/request';
+import { MemoryContext } from '@/services/memory';
 
 interface Section {
-    id: number;
-    name: string;
-    value:string;
+    name:string;
     subsections:string;
   }
-  interface Sections {
-    orden: number[];
-    objetos: Record<string, Section>;
-  }
+ 
  
 export default function UpdateSection(){
+    const contexto = useContext(MemoryContext);
     const [preview,setPreview]=useState({
         name:''
     });
     const [sectionChoosed, setSectionChoosed] = useState('');
     const [response, setResponse] = useState('');
-    const [sectionsDB,setSectionsDB]=useState<Sections>({
-        orden:[],
-        objetos:{}
-    });
- 
+  
 
     async function done(e: FormEvent<HTMLFormElement>){
 
         e.preventDefault();
         const form = e.target as HTMLFormElement;
         const formData = new FormData(form);
-        const inputValue = formData.get('value') as string;
-        const subsectionsList=sectionsDB.objetos[sectionChoosed].subsections.split(',');
-        subsectionsList[0]=inputValue;
-        const value=subsectionsList.join('/');
-        const subsections=subsectionsList.join(',');
-        const formJson={
-            value:value,
-            subsections:subsections,
-            name:sectionsDB.objetos[sectionChoosed].name.replace(/[^a-zA-Z]/g, '').toLowerCase(),
-            newName:inputValue
-        }
-
-        const response=await put(`/sections/section/${sectionChoosed}`,formJson)
-        setResponse(response);
-        setTimeout(()=>setResponse(''),2000);
+        const firstValue = formData.values().next().value;
+        const oldName=contexto?.state.subsections[sectionChoosed][0] as string
+        const subsectionsList=contexto?.state.subsections[sectionChoosed] as string[];
+        const copysubsectionsList=[...subsectionsList];
+        copysubsectionsList[0]=firstValue;
+        const newData:Section={name:firstValue.replace(/\s/g, '_'),subsections:copysubsectionsList.join(',')};
+        const result=await updateSectionFunc(oldName,newData.name,sectionChoosed,newData)
+        if(result.id){
+            setResponse('create succesfully');
+            setTimeout(()=>setResponse(''),2000);
+        }else{setResponse('something wrog has ocurred');
+            setTimeout(()=>setResponse(''),2000);}
 
     }
     function onPreview (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>){
@@ -59,8 +48,8 @@ export default function UpdateSection(){
        
     }
     function section(event:ChangeEvent<HTMLSelectElement>){
-        setSectionChoosed(event.target.value);
-        console.log(event.target.value)
+        const value=event.target.value;
+        setSectionChoosed(value);
     }
  
 
@@ -71,15 +60,16 @@ export default function UpdateSection(){
                 <div className='w-full rounded shadow shadow-black p-2 mb-2'>
                     <p className='mr-2 text-center' >Select some section for update name:</p>
                     <select name="section" id="section" className=" rounded shadow shadow-black mb-2 w-full" onChange={section}>
-                        {sectionsDB.orden.map(id=> 
-                        <option key={id} value={id}>{sectionsDB.objetos[id]?.name}</option> 
+                        <option  value={''}>{'Selecciona una seccion'}</option> 
+                        {contexto?.state.order.map((section,id)=> 
+                        <option key={`section${id}`} value={section}>{contexto.state.subsections[section][0]}</option> 
                         )}
                     </select>
                 </div>
                 <form className="w-full h-full mb-2 lg:mb-0" method='post' onSubmit={done} encType="multipart/form-data">
                     <div className="flex mb-2">
                         <p>New name of the section: </p>
-                        <input className=" shadow shadow-black rounded ml-2 w-full" required name="value" type="text" onChange={onPreview}/>
+                        <input className=" shadow shadow-black rounded ml-2 w-full" required name="name" type="text" onChange={onPreview}/>
                     </div>
                     <button  className="bg-gradient-to-r from-cyan-500 to-blue-500 w-full rounded shadow shadow-black h-10 text-white" type="submit">Done</button>
                 </form>

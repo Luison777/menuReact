@@ -1,34 +1,24 @@
 "use client"
 
-import { FormEvent,  useState,  ChangeEvent, useEffect } from 'react';
+import { FormEvent,  useState,  ChangeEvent, useEffect, useContext } from 'react';
 
-import { deleteSection, deleteSubsection, readData, } from '@/services/request';
+import {  deleteSubsection, readData, } from '@/services/request';
+import { MemoryContext } from '@/services/memory';
 
 interface Section {
-    id: number;
-    name: string;
-    value:string;
+
     subsections:string;
-  }
-  interface Sections {
-    orden: number[];
-    objetos: Record<string, Section>;
   }
 
 export default function DeleteSubsection(){
+    const contexto = useContext(MemoryContext);
     const [preview,setPreview]=useState({
         name:''
     });
-    const [sectionChoosed, setSectionChoosed] = useState(NaN);
+    const [sectionChoosed, setSectionChoosed] = useState('');
     const [response, setResponse] = useState('');
-    const [sectionsDB,setSectionsDB]=useState<Sections>({
-        orden:[],
-        objetos:{}
-    });
-    const[subsectionDB,setSubsectionDB]=useState<string[]>([]);
-    const [subsectionChoosed, setSubsectionChoosed] = useState(NaN);
+    const [subsectionChoosed, setSubsectionChoosed] = useState('');
 
-   
     function onPreview (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>){
         const { name, value } = event.target;
         setPreview({
@@ -38,30 +28,25 @@ export default function DeleteSubsection(){
        
     }
     function section(event:ChangeEvent<HTMLSelectElement>){
-        const number=parseInt(event.target.value);
-        setSectionChoosed(number);
+        const value=event.target.value;
+        setSectionChoosed(value);
   
     }
     async function deleteDishButton(){
-        const subsectionsList=[...subsectionDB];
-        const name=subsectionsList[subsectionChoosed];
-        subsectionsList.splice(subsectionChoosed,1);
-        const value=subsectionsList.join('/');
-        const subsections=subsectionsList.join(',');
-        const formJson={
-            value:value.replace(/[^a-zA-Z]/g, '').toLowerCase(),
-            subsections:subsections,
-            name:name.replace(/[^a-zA-Z]/g, '').toLowerCase()
-
-        }
-        const response=await deleteSubsection(`/sections/subsection/${sectionChoosed}`,formJson)
+        
+        const subsectionsList=contexto?.state.subsections[sectionChoosed] as string[];
+        const copysubsectionsList=[...subsectionsList];
+        const subsectionIndex=copysubsectionsList.indexOf(subsectionChoosed);
+        copysubsectionsList.splice(subsectionIndex,1);
+        const newData:Section={subsections:copysubsectionsList.join(',')};
+        console.log(subsectionChoosed,sectionChoosed,newData);
+        const response=await deleteSubsection(subsectionChoosed,sectionChoosed,newData);
         setResponse(response);
         setTimeout(()=>setResponse(''),2000);
-        console.log(sectionChoosed,formJson);
     }
     function subsectionFunc(event:ChangeEvent<HTMLSelectElement>){
-        const number=parseInt(event.target.value);
-        setSubsectionChoosed(number);
+        const value=event.target.value;
+        setSubsectionChoosed(value);
 
     }
 
@@ -72,16 +57,18 @@ export default function DeleteSubsection(){
                 <div className='w-full rounded shadow shadow-black p-2 mb-2'>
                     <p className='mr-2 text-center' >Select some section for delete a subsection:</p>
                     <select name="section" id="section" className=" rounded shadow shadow-black mb-2 w-full" onChange={section}>
-                        {sectionsDB.orden.map(id=> 
-                        <option key={id} value={id}>{sectionsDB.objetos[id]?.name}</option> 
+                        <option  value={''}>{'Selecciona una seccion'}</option> 
+                        {contexto?.state.order.map((section,id)=> 
+                        <option key={`section${id}`} value={section}>{contexto.state.subsections[section][0]}</option> 
                         )}
                     </select>
                 </div>
                 <div className='w-full rounded shadow shadow-black p-2 mb-2'>
                     <p className='mr-2 text-center' >Select some subsection delete:</p>
                     <select name="section" id="section" className=" rounded shadow shadow-black mb-2 w-full" onChange={subsectionFunc}>
-                        {subsectionDB.map((sub,indx)=> 
-                        <option key={indx} value={indx}>{sub}</option> 
+                        <option  value={''}>{sectionChoosed!==''? 'Selecciona una subseccion':'Selecciona una seccion primero'}</option> 
+                        {contexto?.state.subsections[sectionChoosed]?.map((sub,indx)=> 
+                        <option key={indx} value={sub.replace(/[^a-zA-Z_]/g,'').toLowerCase()}>{sub}</option> 
                         )}
                     </select>
                 </div>

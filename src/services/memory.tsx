@@ -2,6 +2,7 @@
 
 import { Dispatch,  useReducer } from "react"
 import { createContext } from "react"
+
 interface Dish{
     id: number;
     dish: string;
@@ -11,9 +12,9 @@ interface Dish{
 }
 
 interface State {
-    sections: string[];
+    order: number[];
     subsections: Record<string, string[]>;
-    dishes: Record<string, Record<string, any>>;
+    dishes: Record<string, Dish[]>;
   }
   
 interface Section {
@@ -27,6 +28,8 @@ interface Action{
     type:string;
     data1?:Section[]; 
     data2?:Record<string,Dish[]>;
+    dataSection?:Section;
+   
 }
 
 interface ValueReducer{
@@ -37,51 +40,63 @@ interface ValueReducer{
 export const MemoryContext = createContext<ValueReducer| null>(null);
   
 const initialState:State={
-    sections:[],
+    order:[],
     subsections:{},
     dishes:{}
 }
 const reducer=(state:State,action:Action):State =>{
     switch(action.type){
-        case 'create':{
+        case 'createSection':{
+            let id=action.dataSection?.id as number;
+            const orderList=[...state.order];
+            if (action.dataSection?.id !== undefined) {
+                orderList.push(action.dataSection.id);
+                
+            }
+            
             const newState={
-                sections:[...state.sections],
-                subsections:{...state.subsections},
+                order:[...orderList],
+                subsections:{...state.subsections,[id]:[action.dataSection?.subsections]},
                 dishes:{...state.dishes}
             };
+            //console.log(newState);
             return newState;
         };
         case 'readSections':{
-            const sectionsData = action.data1?.map(obj => obj.name.replace(/[^a-zA-Z_/]/g, '').toLowerCase()) ?? [];
-            const subsectionsData=action.data1?.reduce((obj,data)=>({...obj,[data.name.replace(/[^a-zA-Z_/]/g, '').toLowerCase()]:data.subsections.split(',')}),{}) ?? [];
+            const sectionsData = action.data1?.map(obj => obj.id).sort(function(a,b){return a-b}) ?? [];
+            const subsectionsData=action.data1?.reduce((obj,data)=>({...obj,[data.id]:data.subsections.split(',')}),{}) ?? [];
             const newState={
-                sections:[...sectionsData],
+                order:[...sectionsData],
                 subsections:{...subsectionsData},
                 dishes:{...state.dishes}
             };
-            console.log(newState);
+            //console.log(newState);
             return newState;
         };
-        case 'readDishes':{        
+        case 'readDishes':{       
+            
             const newState={
-                sections:[...state.sections],
+                order:[...state.order],
                 subsections:{...state.subsections},
                 dishes:{...state.dishes,...action.data2}
             };
             //console.log(newState)
             return newState;
         };
-        case 'update':{
+        case 'createSubsection':{
+            let id=action.dataSection?.id as number;
+            let subsections=action.dataSection?.subsections.split(',') as string[];
             const newState={
-                sections:[...state.sections],
-                subsections:{...state.subsections},
+                order:[...state.order],
+                subsections:{ ...state.subsections,[id]:[...subsections]},
                 dishes:{...state.dishes}
             };
+            //console.log(newState);
             return newState;
         };
         case 'delete':{
             const newState={
-                sections:[...state.sections],
+                order:[...state.order],
                 subsections:{...state.subsections},
                 dishes:{...state.dishes}
             };

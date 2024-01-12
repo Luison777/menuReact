@@ -1,16 +1,19 @@
 "use client"
 
-import { FormEvent,  useState,  ChangeEvent, useEffect } from 'react';
+import { MemoryContext } from '@/services/memory';
+import { createSection } from '@/services/request';
+import { FormEvent,  useState,  ChangeEvent, useContext } from 'react';
 
-import {  post} from '@/services/request';
+
+
 
 export default function CreateSection(){
+
     const [preview,setPreview]=useState({
         name:''
     });
-
     const [response, setResponse] = useState('');
-
+    const contexto = useContext(MemoryContext);
     async function done(e: FormEvent<HTMLFormElement>){
 
         e.preventDefault();
@@ -18,16 +21,18 @@ export default function CreateSection(){
         const formData = new FormData(form);
         const inputValue = formData.get('name') as string;
         const formJson = {
-            name:inputValue,
-            value:inputValue.replace(/[^a-zA-Z]/g, '').toLowerCase(),
-            subsections:inputValue,
+            name:inputValue.replace(/\s/g, '_'),
+            subsections:inputValue.replace(/\s/g, '_'),
         }
   
-        const response=await post('/sections/section',formJson)
-
-       setResponse(response);
-       setTimeout(()=>setResponse(''),2000);
-
+        const result=await createSection(inputValue.replace(/\s/g, '_').toLowerCase(),formJson);
+        console.log(result);
+        contexto?.callbackReducer({type:'createSection',dataSection:result});
+        if(result.id){
+            setResponse('create succesfully');
+            setTimeout(()=>setResponse(''),2000);
+        }else{setResponse('something wrog has ocurred');
+            setTimeout(()=>setResponse(''),2000);}
     }
     function onPreview (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>){
         const { name, value } = event.target;
